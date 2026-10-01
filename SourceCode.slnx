@@ -8,4 +8,5 @@
   <Project Path="RealStep.Runtime.csproj" />
   <Project Path="RealStep.Editor.csproj" />
   <Project Path="RealStep.Demo.csproj" />
+  <Project Path="SourceCode.Core.csproj" />
 </Solution>

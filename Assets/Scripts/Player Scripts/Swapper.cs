@@ -152,7 +152,7 @@ public class Swapper : MonoBehaviour
     {
         if (_target == null) return;
         if (Time.unscaledTime < _nextSwapTime) return;
-        if (!IsInRange(_target)) return;
+        
 
         Vector3 bytePosition = transform.position;
         MoveTo(transform, _target.position);
