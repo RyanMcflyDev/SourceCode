@@ -29,7 +29,6 @@ public class EnemyAI : MonoBehaviour, ITeleportable
     
 
     private float _attackTimer = 0f;
-    private IDamageable _playerDamageable;
 
     private int _currentPatrolIndex = 0;
     private bool _isWaiting = false;
@@ -62,8 +61,6 @@ public class EnemyAI : MonoBehaviour, ITeleportable
             Debug.LogError("[EnemyAI] No GameObject tagged 'Player' found!");
 
         SetNewWanderDestination();
-
-        _playerDamageable = _player.GetComponent<IDamageable>();
     }
 
     void Update()
@@ -167,7 +164,6 @@ public class EnemyAI : MonoBehaviour, ITeleportable
         if (_attackTimer >= _attackCooldown)
         {
             _attackTimer = 0f;
-            _playerDamageable?.TakeDamage(_attackDamage);
             Debug.Log($"[EnemyAI] Attacked player for {_attackDamage} damage.");
         }
     }
