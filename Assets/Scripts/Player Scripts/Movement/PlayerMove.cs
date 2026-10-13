@@ -20,6 +20,8 @@ public class PlayerMove : MonoBehaviour
     private float _verticalVelocity;
     //is the player jumping or falling
     private bool _isLaunched;
+    //anything that bends the move input (e.g. ControlScrambler)
+    private IMoveInputModifier[] _inputModifiers;
 
     public MovementSettings Settings => _settings;
     //is the player grounded
@@ -28,6 +30,7 @@ public class PlayerMove : MonoBehaviour
     private void Awake()
     {
         _controller = GetComponent<CharacterController>();
+        _inputModifiers = GetComponents<IMoveInputModifier>();
         if (_camera == null) _camera = Camera.main.transform;
     }
 
@@ -54,6 +57,7 @@ public class PlayerMove : MonoBehaviour
     private void UpdateWalking()
     {
         Vector2 input = _moveAction.action.ReadValue<Vector2>();
+        foreach (IMoveInputModifier modifier in _inputModifiers) input = modifier.ModifyMoveInput(input);
         Vector3 targetVelocity = CameraRelative(input) * _settings.MoveSpeed;
 
         _horizontalVelocity = Vector3.MoveTowards(_horizontalVelocity, targetVelocity, _settings.Acceleration * Time.deltaTime);
