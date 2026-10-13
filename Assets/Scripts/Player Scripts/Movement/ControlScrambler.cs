@@ -20,8 +20,11 @@ public class ControlScrambler : MonoBehaviour, IMoveInputModifier
              "which can put W and S at right angles. Messier, see notes.")]
     [SerializeField] private bool _keepOppositesPaired = true;
 
-    [Tooltip("Seconds before controls go back to normal. 0 = stay scrambled until Restore() or the next scramble.")]
-    [SerializeField, Min(0f)] private float _scrambleDuration = 0f;
+    [Tooltip("Tick to keep controls scrambled until Restore() is called or the next scramble rolls. Untick to use the duration below.")]
+    [SerializeField] private bool _permanent = false;
+
+    [Tooltip("Seconds before controls go back to normal. Ignored when Permanent is ticked.")]
+    [SerializeField, Min(0.1f)] private float _scrambleDuration = 8f;
 
     [Header("Events")]
     [Tooltip("Fires on scramble with a readable mapping, e.g. \"W > Left, A > Down, ...\". Hook UI, sound or screen shake here.")]
@@ -36,10 +39,12 @@ public class ControlScrambler : MonoBehaviour, IMoveInputModifier
     public bool IsScrambled { get; private set; }
     public float DamageTowardsScramble => _damageTaken;
     public float DamageThreshold => _damageThreshold;
+    // Seconds left before controls restore (0 when not scrambled or permanent). Handy for a UI countdown.
+    public float TimeRemaining => IsScrambled && !_permanent ? Mathf.Max(_restoreTimer, 0f) : 0f;
 
     private void Update()
     {
-        if (!IsScrambled || _scrambleDuration <= 0f) return;
+        if (!IsScrambled || _permanent) return;
 
         _restoreTimer -= Time.deltaTime;
         if (_restoreTimer <= 0f) Restore();
