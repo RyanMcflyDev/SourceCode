@@ -20,6 +20,8 @@ public class Swapper : MonoBehaviour
 
   [Header("Targeting")]
     [SerializeField] private LayerMask _swappableLayers;
+    // only these block line of sight, enemies shouldn't
+    [SerializeField] private LayerMask _sightBlockers;
     [SerializeField] private float _swapRange = 7f;
     [SerializeField] private float _eyeHeight = 1.2f;
     [SerializeField] private float _markerHeight = 1.5f;
@@ -31,6 +33,8 @@ public class Swapper : MonoBehaviour
 
 
    private const float NavMeshSnapDistance = 2f;
+   // how far sideways an enemy can be pulled onto the navmesh, keep small so they fall into pits
+   private const float LedgeSnapDistance = 0.5f;
 
    private Transform _target;
    private GameObject _marker;
@@ -152,7 +156,7 @@ public class Swapper : MonoBehaviour
        Vector3 eye = transform.position + Vector3.up * _eyeHeight;
        
        // Check if the target is within line of sight
-       if (!Physics.Linecast(eye, targetCollider.bounds.center, out RaycastHit hit, Physics.DefaultRaycastLayers, QueryTriggerInteraction.Ignore))
+       if (!Physics.Linecast(eye, targetCollider.bounds.center, out RaycastHit hit, _sightBlockers, QueryTriggerInteraction.Ignore))
        return true;
 
        return hit.collider == targetCollider;
@@ -205,8 +209,15 @@ public class Swapper : MonoBehaviour
     {
         if (NavMesh.SamplePosition(position, out NavMeshHit hit, NavMeshSnapDistance, NavMesh.AllAreas))
         {
-            agent.Warp(hit.position);
-            return;
+            // only snap if the navmesh is basically underneath, otherwise it was the pit edge
+            Vector3 sideways = hit.position - position;
+            sideways.y = 0f;
+
+            if (sideways.magnitude <= LedgeSnapDistance)
+            {
+                agent.Warp(hit.position);
+                return;
+            }
         }
 
         // If no valid NavMesh position is found, let the enemy fall to the ground by disabling the NavMeshAgent and setting the position directly

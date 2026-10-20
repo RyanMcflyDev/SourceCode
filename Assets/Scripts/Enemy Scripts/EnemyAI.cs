@@ -22,6 +22,13 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
     [SerializeField] private float _confusedDuration = 3f;
     [SerializeField] private float _confusedTurnSpeed = 120f;
 
+    [Header("Destabilise")]
+    // turn off for enemies that shouldn't die from a second swap
+    [SerializeField] private bool _secondSwapKills = true;
+    [SerializeField] private float _killGraceTime = 0.25f;
+
+    private float _confusedEndedAt = -999f;
+
     [Header("Attack")]
     [SerializeField] private float _attackDamage = 10f;
     [SerializeField] private float _attackCooldown = 1.5f;
@@ -75,6 +82,8 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
     void Update()
     {
         if (_player == null) return;
+        // agent gets turned off while falling into a pit
+        if (!_agent.enabled) return;
 
         switch (_currentState)
         {
@@ -218,21 +227,18 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
         _agent.ResetPath();
         transform.Rotate(0f, _confusedTurnSpeed * Time.deltaTime, 0f);
 
+        // stays stunned for the full time even if it can see byte, otherwise the second swap is impossible
         _confusedTimer += Time.deltaTime;
         if (_confusedTimer >= _confusedDuration)
         {
             _confusedTimer = 0f;
+            _confusedEndedAt = Time.time;
             TransitionTo(AIState.Patrol);
-            SetNewWanderDestination();
-        }
-
-        if (CanSeePlayer())
-        {
-            _lastKnownPosition = _player.position;
-            _confusedTimer = 0f;
-            TransitionTo(AIState.Chase);
+            StartPatrolling();
         }
     }
+
+    bool IsStillStunned() => _currentState == AIState.Confused || Time.time - _confusedEndedAt <= _killGraceTime;
 
     bool CanSeePlayer()
     {
@@ -241,6 +247,14 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
     public void OnTeleported()
     {
+        // swapped again while stunned (or just after) = destabilised, so it dies
+        if (_secondSwapKills && IsStillStunned())
+        {
+            if (TryGetComponent(out IKillable killable)) killable.Kill("destabilise");
+            return;
+        }
+
+        _confusedTimer = 0f;
         _lastKnownPosition = null;
         _investigateTimer = 0f;
         _isWaiting = false;
@@ -253,6 +267,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
         _lastKnownPosition = null;
         _investigateTimer = 0f;
         _confusedTimer = 0f;
+        _confusedEndedAt = -999f;
         _attackTimer = 0f;
         _isWaiting = false;
         _agent.stoppingDistance = _attackRange;
