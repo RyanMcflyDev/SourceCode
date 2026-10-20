@@ -3,7 +3,7 @@ using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 
-public class PlayerMove : MonoBehaviour
+public class PlayerMove : MonoBehaviour, IResettable
 {
 // Movement settings
     [SerializeField] private MovementSettings _settings;
@@ -32,6 +32,7 @@ public class PlayerMove : MonoBehaviour
     }
 
     private void OnEnable() => _moveAction.action.Enable();
+    private void OnDisable() => _moveAction.action.Disable();
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -91,6 +92,14 @@ public class PlayerMove : MonoBehaviour
         _horizontalVelocity = horizontalVelocity;
         _verticalVelocity = verticalVelocity;
         _isLaunched = true;
+    }
+
+// stop byte keeping his falling speed after respawning
+    public void ResetState()
+    {
+        _horizontalVelocity = Vector3.zero;
+        _verticalVelocity = 0f;
+        _isLaunched = false;
     }
 
 

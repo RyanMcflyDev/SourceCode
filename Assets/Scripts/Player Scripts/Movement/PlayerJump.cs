@@ -18,7 +18,11 @@ public class PlayerJump : MonoBehaviour
         _jumpAction.action.performed += OnJump;
     }
 
-    private void OnDisable() => _jumpAction.action.performed -= OnJump;
+    private void OnDisable()
+    {
+        _jumpAction.action.performed -= OnJump;
+        _jumpAction.action.Disable();
+    }
 
     private void OnJump(InputAction.CallbackContext context) => TryJump();
 

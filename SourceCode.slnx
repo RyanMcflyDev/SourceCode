@@ -2,10 +2,9 @@
   <Project Path="Assembly-CSharp.csproj" />
   <Project Path="SingularityGroup.HotReload.Editor.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.csproj" />
+  <Project Path="SourceCode.Gameplay.csproj" />
   <Project Path="VHierarchy.csproj" />
   <Project Path="RealStep.Runtime.csproj" />
-  <Project Path="Assembly-CSharp-firstpass.csproj" />
-  <Project Path="SourceCode.Gameplay.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.Public.csproj" />
   <Project Path="RealStep.Demo.csproj" />
   <Project Path="SourceCode.Core.csproj" />

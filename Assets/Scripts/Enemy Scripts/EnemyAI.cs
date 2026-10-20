@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAI : MonoBehaviour, ITeleportable
+public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 {
     [Header("Detection")]
     [SerializeField] private float _detectionRange = 10f;
@@ -60,7 +60,16 @@ public class EnemyAI : MonoBehaviour, ITeleportable
         else
             Debug.LogError("[EnemyAI] No GameObject tagged 'Player' found!");
 
-        SetNewWanderDestination();
+        StartPatrolling();
+    }
+
+    void StartPatrolling()
+    {
+        _currentPatrolIndex = 0;
+        if (_patrolPoints != null && _patrolPoints.Length > 0)
+            _agent.SetDestination(_patrolPoints[0].position);
+        else
+            SetNewWanderDestination();
     }
 
     void Update()
@@ -164,7 +173,9 @@ public class EnemyAI : MonoBehaviour, ITeleportable
         if (_attackTimer >= _attackCooldown)
         {
             _attackTimer = 0f;
-            Debug.Log($"[EnemyAI] Attacked player for {_attackDamage} damage.");
+            // one hit kills for now, damage not used
+            if (_player.TryGetComponent(out IKillable killable))
+                killable.Kill(gameObject.name);
         }
     }
     else
@@ -235,6 +246,19 @@ public class EnemyAI : MonoBehaviour, ITeleportable
         _isWaiting = false;
         TransitionTo(AIState.Confused);
         Debug.Log($"[EnemyAI] {gameObject.name} teleported — entering Confused state.");
+    }
+
+    public void ResetState()
+    {
+        _lastKnownPosition = null;
+        _investigateTimer = 0f;
+        _confusedTimer = 0f;
+        _attackTimer = 0f;
+        _isWaiting = false;
+        _agent.stoppingDistance = _attackRange;
+        _agent.ResetPath();
+        TransitionTo(AIState.Patrol);
+        StartPatrolling();
     }
 
     void TransitionTo(AIState newState)

@@ -58,6 +58,8 @@ public class Swapper : MonoBehaviour
     _selectAction.action.performed += OnSelect;
     _cancelAction.action.performed += OnCancel;
     _swapAction.action.performed += OnSwap;
+
+    GameEvents.PlayerDied += OnPlayerDied;
     
     
     }
@@ -68,6 +70,13 @@ public class Swapper : MonoBehaviour
         _selectAction.action.performed -= OnSelect;
         _cancelAction.action.performed -= OnCancel;
         _swapAction.action.performed -= OnSwap;
+        GameEvents.PlayerDied -= OnPlayerDied;
+
+        // domain reload is off so actions stay on between plays unless turned off here
+        _pointAction.action.Disable();
+        _selectAction.action.Disable();
+        _cancelAction.action.Disable();
+        _swapAction.action.Disable();
     }
     
     void Start()
@@ -85,6 +94,9 @@ public class Swapper : MonoBehaviour
     private void OnSelect(InputAction.CallbackContext context) => TrySelect();
     private void OnCancel(InputAction.CallbackContext context) => CancelSelection();
     private void OnSwap(InputAction.CallbackContext context) => TrySwap();
+
+    // drop the target on death so it can't carry over into the reset room
+    private void OnPlayerDied(string cause) => CancelSelection();
 
 // Update the marker position and check if the target is still valid after frame is called
     private void LateUpdate()
@@ -154,10 +166,12 @@ public class Swapper : MonoBehaviour
         if (Time.unscaledTime < _nextSwapTime) return;
         
 
-        Vector3 bytePosition = transform.position;
-        MoveTo(transform, _target.position);
-        MoveTo(_target, bytePosition);
+        Vector3 byteFeet = GetFeet(transform);
+        Vector3 targetFeet = GetFeet(_target);
 
+        MoveTo(transform, transform.position + (targetFeet - byteFeet));
+        MoveTo(_target, _target.position + (byteFeet - targetFeet));
+        Physics.SyncTransforms();
         _nextSwapTime = Time.unscaledTime + _cooldown;
 
         if (_target.TryGetComponent(out ITeleportable swapped)) swapped.OnTeleported();
@@ -203,5 +217,11 @@ public class Swapper : MonoBehaviour
     }
 
 
-
+    // Bottom-centre of an object's collider, used as its "feet" for swapping.
+    private static Vector3 GetFeet(Transform obj)
+    {
+        Collider col = obj.TryGetComponent(out CharacterController cc) ? cc : obj.GetComponent<Collider>();
+        if (col == null) return obj.position;
+        return new Vector3(obj.position.x, col.bounds.min.y, obj.position.z);
+    }
 }
