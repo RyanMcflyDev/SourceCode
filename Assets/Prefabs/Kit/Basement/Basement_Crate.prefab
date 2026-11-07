@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2245917588379194548}
   - component: {fileID: 7716206725735336163}
+  - component: {fileID: 1668045694658641896}
   m_Layer: 3
   m_Name: Basement_Crate
   m_TagString: Untagged
@@ -54,6 +55,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &1668045694658641896
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895251829074782490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: acd35fa2dfa66ec41b49a0206da4acee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SourceCode.Gameplay::FootstepSurface
+  _footsteps: {fileID: 11400000, guid: 809e9403a8eadec4492f98042cca16f8, type: 2}
+  _zoneSize: {x: 0, y: 0, z: 0}
 --- !u!1001 &3909755618018376144
 PrefabInstance:
   m_ObjectHideFlags: 0
