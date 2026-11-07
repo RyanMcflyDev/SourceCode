@@ -1047,7 +1047,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 136
   _checkDistance: 1.5
-  _runSpeed: 2
+  _landHeight: 0.03
+  _liftHeight: 0.06
+  _settleSpeed: 0.05
+  _runSpeed: 10
   _minSpeed: 0.2
   _minGap: 0.12
   _volume: 0.6
