@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 5791619015070137060}
   - component: {fileID: 5435854442958382200}
   m_Layer: 6
-  m_Name: Basement_ExitDoor
+  m_Name: Basement ExitDoor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -72,7 +72,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 933977787103569744, guid: 1dcf7a0c9273f4a43b7ccdef72cfb0a3, type: 3}
       propertyPath: m_Name
-      value: Art
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 933977787103569744, guid: 1dcf7a0c9273f4a43b7ccdef72cfb0a3, type: 3}
       propertyPath: m_Layer

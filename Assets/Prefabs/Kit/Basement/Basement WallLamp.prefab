@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 2801344757473227815}
   - component: {fileID: 6272223329363188781}
   m_Layer: 0
-  m_Name: Basement_WallLamp
+  m_Name: Basement WallLamp
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

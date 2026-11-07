@@ -19,7 +19,7 @@ public class EnemyPerception : MonoBehaviour
 
     private const int ArcSegments = 20;
 
-    public bool CanSeePlayer(Transform origin, Transform player)
+    public bool CanSeePlayer(Transform origin, Transform player, bool alerted = false)
     {
         if (player == null) return false;
 
@@ -32,10 +32,11 @@ public class EnemyPerception : MonoBehaviour
         Vector3 dirToPlayer = rawDirection / distanceToPlayer;
         float angleToPlayer = Vector3.Angle(origin.forward, dirToPlayer);
 
-        if (angleToPlayer > _outerAngle) return false;
+        // once alerted it tracks byte all round, the cone only matters for spotting him
+        if (!alerted && angleToPlayer > _outerAngle) return false;
 
         // Full range inside inner cone, lerp down to peripheral range toward the outer edge
-        float effectiveRange = angleToPlayer <= _innerAngle
+        float effectiveRange = alerted || angleToPlayer <= _innerAngle
             ? _detectionRange
             : Mathf.Lerp(_detectionRange, _peripheralRange,
                 Mathf.InverseLerp(_innerAngle, _outerAngle, angleToPlayer));

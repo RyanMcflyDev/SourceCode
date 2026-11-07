@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 2245917588379194548}
   - component: {fileID: 7716206725735336163}
   - component: {fileID: 1668045694658641896}
+  - component: {fileID: 2306675140622500432}
   m_Layer: 3
-  m_Name: Basement_Crate
+  m_Name: Basement Crate
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -69,6 +70,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: SourceCode.Gameplay::FootstepSurface
   _footsteps: {fileID: 11400000, guid: 809e9403a8eadec4492f98042cca16f8, type: 2}
   _zoneSize: {x: 0, y: 0, z: 0}
+--- !u!208 &2306675140622500432
+NavMeshObstacle:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895251829074782490}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Shape: 1
+  m_Extents: {x: 0.5, y: 0.5, z: 0.5}
+  m_MoveThreshold: 0.1
+  m_Carve: 1
+  m_CarveOnlyStationary: 1
+  m_Center: {x: 0, y: 0, z: 0}
+  m_TimeToStationary: 0.5
 --- !u!1001 &3909755618018376144
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -79,7 +96,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 758160194, guid: 681e8c7fed95aa7419814bc1821d704e, type: 3}
       propertyPath: m_Name
-      value: Art
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 758160194, guid: 681e8c7fed95aa7419814bc1821d704e, type: 3}
       propertyPath: m_Layer

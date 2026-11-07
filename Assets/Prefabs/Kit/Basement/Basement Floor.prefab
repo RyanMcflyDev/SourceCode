@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6819628523237970836}
   - component: {fileID: 2766968133957940100}
   m_Layer: 7
-  m_Name: Basement_Floor
+  m_Name: Basement Floor
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -79,7 +79,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1603742014, guid: 40d47deaca22b9e4cbe24ddd6fc02670, type: 3}
       propertyPath: m_Name
-      value: Art
+      value: Model
       objectReference: {fileID: 0}
     - target: {fileID: 1603742014, guid: 40d47deaca22b9e4cbe24ddd6fc02670, type: 3}
       propertyPath: m_Layer

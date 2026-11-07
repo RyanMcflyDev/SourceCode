@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2250fd5e37670654a87276237aa79049, type: 3}
-  m_Name: Footsteps_Tile
+  m_Name: Footsteps Tile
   m_EditorClassIdentifier: SourceCode.Gameplay::FootstepSet
   <WalkClips>k__BackingField:
   - {fileID: 8300000, guid: b993df4a93c1d304ab19d8b2eb88c9a5, type: 3}

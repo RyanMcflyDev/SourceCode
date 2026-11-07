@@ -162,7 +162,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
     void UpdateChase()
 {
-    if (!CanSeePlayer())
+    if (!CanSeePlayer(true))
     {
         _agent.stoppingDistance = 0f;
         TransitionTo(AIState.Investigate);
@@ -207,7 +207,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
         _agent.SetDestination(_lastKnownPosition.Value);
 
-        if (CanSeePlayer())
+        if (CanSeePlayer(true))
         {
             _lastKnownPosition = _player.position;
             TransitionTo(AIState.Chase);
@@ -240,10 +240,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
     bool IsStillStunned() => _currentState == AIState.Confused || Time.time - _confusedEndedAt <= _killGraceTime;
 
-    bool CanSeePlayer()
-    {
-    return _perception.CanSeePlayer(transform, _player);
-    }
+    bool CanSeePlayer(bool alerted = false) => _perception.CanSeePlayer(transform, _player, alerted);
 
     public void OnTeleported()
     {
