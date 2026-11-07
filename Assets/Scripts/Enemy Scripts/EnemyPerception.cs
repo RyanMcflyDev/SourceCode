@@ -42,8 +42,12 @@ public class EnemyPerception : MonoBehaviour
 
         if (distanceToPlayer > effectiveRange) return false;
 
-        Physics.Raycast(origin.position, dirToPlayer, out RaycastHit hit, effectiveRange, _sightBlockMask);
-        return hit.collider != null && hit.collider.CompareTag("Player");
+        // Ignore triggers so detection zones and pickups don't block sight
+        if (!Physics.Raycast(origin.position, dirToPlayer, out RaycastHit hit, effectiveRange,
+                _sightBlockMask, QueryTriggerInteraction.Ignore))
+            return false;
+
+        return hit.collider.CompareTag("Player");
     }
 
     private void OnValidate()

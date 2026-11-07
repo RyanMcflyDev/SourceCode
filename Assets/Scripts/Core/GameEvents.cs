@@ -7,6 +7,7 @@ public static class GameEvents
     public static event Action PlayerRespawned;
     public static event Action<Transform> SpawnPointChanged;
     public static event Action<bool> CodeVisionChanged;
+    public static event Action<Transform> PlayerSwapped;
 
     // so things that switch on mid code vision can check if it's already active
     public static bool CodeVisionActive { get; private set; }
@@ -14,6 +15,7 @@ public static class GameEvents
     public static void RaisePlayerDied(string cause) => PlayerDied?.Invoke(cause);
     public static void RaisePlayerRespawned() => PlayerRespawned?.Invoke();
     public static void RaiseSpawnPointChanged(Transform spawnPoint) => SpawnPointChanged?.Invoke(spawnPoint);
+    public static void RaisePlayerSwapped(Transform target) => PlayerSwapped?.Invoke(target);
 
     public static void RaiseCodeVisionChanged(bool active)
     {
@@ -29,6 +31,7 @@ public static class GameEvents
         PlayerRespawned = null;
         SpawnPointChanged = null;
         CodeVisionChanged = null;
+        PlayerSwapped = null;
         CodeVisionActive = false;
     }
 }

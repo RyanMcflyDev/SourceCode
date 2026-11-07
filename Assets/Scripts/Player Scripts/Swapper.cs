@@ -22,6 +22,8 @@ public class Swapper : MonoBehaviour
     [SerializeField] private LayerMask _swappableLayers;
     // only these block line of sight, enemies shouldn't
     [SerializeField] private LayerMask _sightBlockers;
+    [Tooltip("Swappable objects block sight to things behind them, but can still be swapped with themselves")]
+    [SerializeField] private bool _swappablesBlockSight = true;
     [SerializeField] private float _swapRange = 7f;
     [SerializeField] private float _eyeHeight = 1.2f;
     [SerializeField] private float _markerHeight = 1.5f;
@@ -154,9 +156,12 @@ public class Swapper : MonoBehaviour
     private bool HasLineOfSight(Collider targetCollider)
     {
        Vector3 eye = transform.position + Vector3.up * _eyeHeight;
-       
+
+       // a swappable in the way blocks anything behind it, the target itself still counts as seen below
+       LayerMask blockers = _swappablesBlockSight ? _sightBlockers | _swappableLayers : _sightBlockers;
+
        // Check if the target is within line of sight
-       if (!Physics.Linecast(eye, targetCollider.bounds.center, out RaycastHit hit, _sightBlockers, QueryTriggerInteraction.Ignore))
+       if (!Physics.Linecast(eye, targetCollider.bounds.center, out RaycastHit hit, blockers, QueryTriggerInteraction.Ignore))
        return true;
 
        return hit.collider == targetCollider;
@@ -179,6 +184,7 @@ public class Swapper : MonoBehaviour
         _nextSwapTime = Time.unscaledTime + _cooldown;
 
         if (_target.TryGetComponent(out ITeleportable swapped)) swapped.OnTeleported();
+        GameEvents.RaisePlayerSwapped(_target);
         CancelSelection();
     }
 

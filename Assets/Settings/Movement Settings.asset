@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7fe46f6784fffcb408f0ef56586fbd3b, type: 3}
   m_Name: Movement Settings
   m_EditorClassIdentifier: Assembly-CSharp::MovementSettings
-  <MoveSpeed>k__BackingField: 7
+  <MoveSpeed>k__BackingField: 4
   <Acceleration>k__BackingField: 60
   <TurnSpeed>k__BackingField: 720
   <Gravity>k__BackingField: -30
