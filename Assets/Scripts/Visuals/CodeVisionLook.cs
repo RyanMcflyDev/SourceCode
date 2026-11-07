@@ -13,6 +13,9 @@ public class CodeVisionLook : MonoBehaviour
     private void Awake()
     {
         _renderer = GetComponent<Renderer>();
+        // kit art keeps its own material when code vision is off
+        if (_normalMaterial == null)
+            _normalMaterial = _renderer.sharedMaterial;
     }
 
     private void OnEnable()
