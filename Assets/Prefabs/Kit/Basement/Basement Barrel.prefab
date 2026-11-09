@@ -68,8 +68,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acd35fa2dfa66ec41b49a0206da4acee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::FootstepSurface
-  _footsteps: {fileID: 11400000, guid: 809e9403a8eadec4492f98042cca16f8, type: 2}
-  _zoneSize: {x: 0, y: 0, z: 0}
+  footsteps: {fileID: 11400000, guid: 809e9403a8eadec4492f98042cca16f8, type: 2}
+  zone: {fileID: 0}
 --- !u!208 &2199191444231658255
 NavMeshObstacle:
   m_ObjectHideFlags: 0
@@ -175,8 +175,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4b44eebf6169a3346b3e7de59644ef6b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVisionLook
-  _normalMaterial: {fileID: 0}
-  _codeVisionMaterial: {fileID: 2100000, guid: 6c86eadddbee0044eaf5697499c7c32e, type: 2}
+  normalMaterial: {fileID: 0}
+  codeVisionMaterial: {fileID: 2100000, guid: 6c86eadddbee0044eaf5697499c7c32e, type: 2}
 --- !u!4 &8198282532957848598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3743832947692670511, guid: f3ccfa9003e9e7e4799853e37266bcd3, type: 3}

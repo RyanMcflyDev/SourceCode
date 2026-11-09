@@ -5,8 +5,8 @@ using UnityEngine.AI;
 public class RoomResetter : MonoBehaviour
 {
     [Header("Tracked Objects")]
-    [SerializeField] private Transform _trackAllChildrenOf;
-    [SerializeField] private Transform[] _alsoTrack;
+    [SerializeField] private Transform trackAllChildrenOf;
+    [SerializeField] private Transform[] alsoTrack;
 
     private struct Snapshot
     {
@@ -15,15 +15,16 @@ public class RoomResetter : MonoBehaviour
         public Quaternion Rotation;
     }
 
-    private readonly List<Snapshot> _snapshots = new List<Snapshot>();
+    private readonly List<Snapshot> snapshots = new List<Snapshot>();
 
-    private void Awake() // remember the starting positions of everything we want to reset
+    // remember the starting positions of everything we want to reset
+    private void Awake()
     {
-        if (_trackAllChildrenOf != null)
-            foreach (Transform child in _trackAllChildrenOf) Remember(child);
+        if (trackAllChildrenOf != null)
+            foreach (Transform child in trackAllChildrenOf) Remember(child);
 
-        if (_alsoTrack != null)
-            foreach (var t in _alsoTrack) if (t != null) Remember(t);
+        if (alsoTrack != null)
+            foreach (var t in alsoTrack) if (t != null) Remember(t);
     }
 
     private void OnEnable() => GameEvents.PlayerDied += OnPlayerDied;
@@ -33,13 +34,13 @@ public class RoomResetter : MonoBehaviour
 
     private void Remember(Transform t)
     {
-        _snapshots.Add(new Snapshot { Target = t, Position = t.position, Rotation = t.rotation });
+        snapshots.Add(new Snapshot { Target = t, Position = t.position, Rotation = t.rotation });
     }
 
-// put everything back where it started
+    // put everything back where it started
     public void ResetRoom()
     {
-        foreach (var snapshot in _snapshots)
+        foreach (var snapshot in snapshots)
         {
             // only null if something got destroyed, use SetActive(false) instead
             if (snapshot.Target == null) continue;
@@ -47,6 +48,7 @@ public class RoomResetter : MonoBehaviour
         }
     }
 
+    // byte resets through PlayerDeath, so nothing here has a character controller
     private static void Restore(Transform t, Vector3 position, Quaternion rotation)
     {
         // killed enemies are disabled not destroyed, so turn them back on
@@ -55,15 +57,9 @@ public class RoomResetter : MonoBehaviour
         if (t.TryGetComponent(out NavMeshAgent agent))
         {
             // swapper turns the agent off if it lands off the navmesh
-            if (!agent.enabled) agent.enabled = true;
+            agent.enabled = true;
             agent.Warp(position);
             t.rotation = rotation;
-        }
-        else if (t.TryGetComponent(out CharacterController controller))
-        {
-            controller.enabled = false;
-            t.SetPositionAndRotation(position, rotation);
-            controller.enabled = true;
         }
         else
         {

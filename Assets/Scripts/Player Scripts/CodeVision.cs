@@ -3,49 +3,48 @@ using UnityEngine.InputSystem;
 
 public class CodeVision : MonoBehaviour
 {
-    [Header("input")]
-    [SerializeField] private InputActionReference _codeVisionAction;
+    [Header("Input")]
+    [SerializeField] private InputActionReference codeVisionAction;
 
     [Header("Timing")]
     // 0 means it stays on until pressed again
-    [SerializeField] private float _duration = 0f;
+    [SerializeField] private float duration = 0f;
 
-    private bool _isActive;
-    private float _endTime;
+    private float endTime;
 
-    public bool IsActive => _isActive;
+    public bool IsActive { get; private set; }
 
     private void OnEnable()
     {
-        _codeVisionAction.action.Enable();
-        _codeVisionAction.action.performed += OnToggle;
+        codeVisionAction.action.Enable();
+        codeVisionAction.action.performed += OnToggle;
         GameEvents.PlayerDied += OnPlayerDied;
     }
 
     private void OnDisable()
     {
-        _codeVisionAction.action.performed -= OnToggle;
-        _codeVisionAction.action.Disable();
+        codeVisionAction.action.performed -= OnToggle;
+        codeVisionAction.action.Disable();
         GameEvents.PlayerDied -= OnPlayerDied;
     }
 
     private void Update()
     {
-        if (_isActive && _duration > 0f && Time.unscaledTime >= _endTime)
+        if (IsActive && duration > 0f && Time.unscaledTime >= endTime)
             SetActive(false);
     }
 
-    private void OnToggle(InputAction.CallbackContext context) => SetActive(!_isActive);
+    private void OnToggle(InputAction.CallbackContext context) => SetActive(!IsActive);
 
     // turn it off on death so the room comes back looking normal
     private void OnPlayerDied(string cause) => SetActive(false);
 
     private void SetActive(bool active)
     {
-        if (_isActive == active) return;
+        if (IsActive == active) return;
 
-        _isActive = active;
-        _endTime = Time.unscaledTime + _duration;
+        IsActive = active;
+        endTime = Time.unscaledTime + duration;
         GameEvents.RaiseCodeVisionChanged(active);
     }
 }

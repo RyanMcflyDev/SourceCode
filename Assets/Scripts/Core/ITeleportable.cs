@@ -1,7 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+// anything that reacts to being swapped (enemies get confused)
 public interface ITeleportable
 {
     void OnTeleported();

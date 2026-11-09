@@ -4,21 +4,21 @@ using UnityEngine;
 public class ToggleOnSwap : MonoBehaviour
 {
     [Header("Trigger")]
-    [SerializeField] private Transform _target;
+    [SerializeField] private Transform target;
 
     [Header("Objects")]
-    [SerializeField] private GameObject[] _turnOff;
-    [SerializeField] private GameObject[] _turnOn;
+    [SerializeField] private GameObject[] turnOff;
+    [SerializeField] private GameObject[] turnOn;
 
     private void OnEnable() => GameEvents.PlayerSwapped += OnPlayerSwapped;
     private void OnDisable() => GameEvents.PlayerSwapped -= OnPlayerSwapped;
 
     private void OnPlayerSwapped(Transform swappedWith)
     {
-        if (swappedWith != _target) return;
+        if (swappedWith != target) return;
 
-        SetAll(_turnOff, false);
-        SetAll(_turnOn, true);
+        SetAll(turnOff, false);
+        SetAll(turnOn, true);
     }
 
     private static void SetAll(GameObject[] objects, bool active)

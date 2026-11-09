@@ -5,17 +5,17 @@ using UnityEngine;
 public class CodeVisionLook : MonoBehaviour
 {
     [Header("Materials")]
-    [SerializeField] private Material _normalMaterial;
-    [SerializeField] private Material _codeVisionMaterial;
+    [SerializeField] private Material normalMaterial;
+    [SerializeField] private Material codeVisionMaterial;
 
-    private Renderer _renderer;
+    private Renderer targetRenderer;
 
     private void Awake()
     {
-        _renderer = GetComponent<Renderer>();
+        targetRenderer = GetComponent<Renderer>();
         // kit art keeps its own material when code vision is off
-        if (_normalMaterial == null)
-            _normalMaterial = _renderer.sharedMaterial;
+        if (normalMaterial == null)
+            normalMaterial = targetRenderer.sharedMaterial;
     }
 
     private void OnEnable()
@@ -28,7 +28,7 @@ public class CodeVisionLook : MonoBehaviour
 
     private void Apply(bool codeVisionOn)
     {
-        Material material = codeVisionOn ? _codeVisionMaterial : _normalMaterial;
-        if (material != null) _renderer.sharedMaterial = material;
+        Material material = codeVisionOn ? codeVisionMaterial : normalMaterial;
+        if (material != null) targetRenderer.sharedMaterial = material;
     }
 }

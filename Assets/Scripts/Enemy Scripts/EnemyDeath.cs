@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class EnemyDeath : MonoBehaviour, IKillable, IResettable
 {
-    private Rigidbody _body;
+    private Rigidbody body;
 
     public bool IsDead { get; private set; }
 
-    private void Awake() => _body = GetComponent<Rigidbody>();
+    private void Awake() => body = GetComponent<Rigidbody>();
 
     // dissolved = turned off, not destroyed, so the room reset can bring it back
     public void Kill(string cause)
@@ -21,14 +21,14 @@ public class EnemyDeath : MonoBehaviour, IKillable, IResettable
     public void ResetState()
     {
         IsDead = false;
-        if (_body == null) return;
+        if (body == null) return;
 
         // stop any fall speed then go back to being moved by the navmesh agent
-        if (!_body.isKinematic)
+        if (!body.isKinematic)
         {
-            _body.linearVelocity = Vector3.zero;
-            _body.angularVelocity = Vector3.zero;
+            body.linearVelocity = Vector3.zero;
+            body.angularVelocity = Vector3.zero;
         }
-        _body.isKinematic = true;
+        body.isKinematic = true;
     }
 }

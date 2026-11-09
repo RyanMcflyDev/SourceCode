@@ -67,8 +67,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: acd35fa2dfa66ec41b49a0206da4acee, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::FootstepSurface
-  _footsteps: {fileID: 11400000, guid: 58420ecb3529b914d84340f5c59dfadc, type: 2}
-  _zoneSize: {x: 0, y: 0, z: 0}
+  footsteps: {fileID: 11400000, guid: 58420ecb3529b914d84340f5c59dfadc, type: 2}
+  zone: {fileID: 0}
 --- !u!1001 &2778636862765408946
 PrefabInstance:
   m_ObjectHideFlags: 0

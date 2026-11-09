@@ -4,18 +4,15 @@ using UnityEngine;
 [RequireComponent(typeof(Collider))]
 public class RoomEntrance : MonoBehaviour
 {
-    [SerializeField] private Transform _spawnPoint;
+    [SerializeField] private Transform spawnPoint;
 
-    private void Reset()
-    {
-        GetComponent<Collider>().isTrigger = true;
-    }
+    private void Reset() => GetComponent<Collider>().isTrigger = true;
 
     private void OnTriggerEnter(Collider other)
     {
         if (!other.CompareTag("Player")) return;
-        if (_spawnPoint == null) return;
+        if (spawnPoint == null) return;
 
-        GameEvents.RaiseSpawnPointChanged(_spawnPoint);
+        GameEvents.RaiseSpawnPointChanged(spawnPoint);
     }
 }

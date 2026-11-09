@@ -2,106 +2,92 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
-
 public class PlayerMove : MonoBehaviour, IResettable
 {
-// Movement settings
-    [SerializeField] private MovementSettings _settings;
-    [SerializeField] private InputActionReference _moveAction;
-    [SerializeField] private Transform _camera;
-
+    [SerializeField] private MovementSettings settings;
+    [SerializeField] private InputActionReference moveAction;
+    [SerializeField] private Transform cameraTransform;
 
     private const float GroundedPush = -2f;
 
-    private CharacterController _controller;
-    //horizontal velocity based on player input and speed setting
-    private Vector3 _horizontalVelocity;
-    //gravity and vertical velocity
-    private float _verticalVelocity;
-    //is the player jumping or falling
-    private bool _isLaunched;
+    private CharacterController controller;
+    // horizontal velocity from input and move speed
+    private Vector3 horizontalVelocity;
+    // gravity and vertical velocity
+    private float verticalVelocity;
+    // is byte jumping or falling
+    private bool isLaunched;
 
-    public MovementSettings Settings => _settings;
-    //is the player grounded
-    public bool IsGrounded => _controller.isGrounded;
+    public MovementSettings Settings => settings;
+    public bool IsGrounded => controller.isGrounded;
 
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
-        if (_camera == null) _camera = Camera.main.transform;
+        controller = GetComponent<CharacterController>();
+        if (cameraTransform == null) cameraTransform = Camera.main.transform;
     }
 
-    private void OnEnable() => _moveAction.action.Enable();
-    private void OnDisable() => _moveAction.action.Disable();
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    private void OnEnable() => moveAction.action.Enable();
+    private void OnDisable() => moveAction.action.Disable();
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (!_isLaunched) UpdateWalking();
+        if (!isLaunched) UpdateWalking();
         UpdateGravity();
         UpdateFacing();
 
-        _controller.Move((_horizontalVelocity + Vector3.up * _verticalVelocity) * Time.deltaTime);
+        controller.Move((horizontalVelocity + Vector3.up * verticalVelocity) * Time.deltaTime);
 
-        if (_isLaunched && _controller.isGrounded) _isLaunched = false; 
+        if (isLaunched && controller.isGrounded) isLaunched = false;
     }
 
-// Update the horizontal velocity based on player input and movement settings
     private void UpdateWalking()
     {
-        Vector2 input = _moveAction.action.ReadValue<Vector2>();
-        Vector3 targetVelocity = CameraRelative(input) * _settings.MoveSpeed;
+        Vector2 input = moveAction.action.ReadValue<Vector2>();
+        Vector3 targetVelocity = CameraRelative(input) * settings.MoveSpeed;
 
-        _horizontalVelocity = Vector3.MoveTowards(_horizontalVelocity, targetVelocity, _settings.Acceleration * Time.deltaTime);
+        horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, settings.Acceleration * Time.deltaTime);
     }
 
     private void UpdateGravity()
     {
-        if (_controller.isGrounded && _verticalVelocity < 0f)
+        if (controller.isGrounded && verticalVelocity < 0f)
         {
-            // A small constant push keeps isGrounded reliable on stairs and slopes
-            _verticalVelocity = GroundedPush;
+            // a small constant push keeps isGrounded reliable on stairs and slopes
+            verticalVelocity = GroundedPush;
             return;
         }
 
-        _verticalVelocity = Mathf.Max(_verticalVelocity + _settings.Gravity * Time.deltaTime, _settings.TerminalVelocity);
+        verticalVelocity = Mathf.Max(verticalVelocity + settings.Gravity * Time.deltaTime, settings.TerminalVelocity);
     }
 
     private void UpdateFacing()
     {
-        if (_horizontalVelocity.sqrMagnitude < 0.01f) return;
+        if (horizontalVelocity.sqrMagnitude < 0.01f) return;
 
-        Quaternion target = Quaternion.LookRotation(_horizontalVelocity);
-        transform.rotation = Quaternion.RotateTowards(transform.rotation, target, _settings.TurnSpeed * Time.deltaTime);
+        Quaternion targetRotation = Quaternion.LookRotation(horizontalVelocity);
+        transform.rotation = Quaternion.RotateTowards(transform.rotation, targetRotation, settings.TurnSpeed * Time.deltaTime);
     }
 
     private Vector3 CameraRelative(Vector2 input)
     {
-        Vector3 forward = Vector3.ProjectOnPlane(_camera.forward, Vector3.up).normalized;
-        Vector3 right = Vector3.ProjectOnPlane(_camera.right, Vector3.up).normalized;
+        Vector3 forward = Vector3.ProjectOnPlane(cameraTransform.forward, Vector3.up).normalized;
+        Vector3 right = Vector3.ProjectOnPlane(cameraTransform.right, Vector3.up).normalized;
         return forward * input.y + right * input.x;
     }
 
-        public void Launch(Vector3 horizontalVelocity, float verticalVelocity)
+    public void Launch(Vector3 newHorizontalVelocity, float newVerticalVelocity)
     {
-        _horizontalVelocity = horizontalVelocity;
-        _verticalVelocity = verticalVelocity;
-        _isLaunched = true;
+        horizontalVelocity = newHorizontalVelocity;
+        verticalVelocity = newVerticalVelocity;
+        isLaunched = true;
     }
 
-// stop byte keeping his falling speed after respawning
+    // stop byte keeping his falling speed after respawning
     public void ResetState()
     {
-        _horizontalVelocity = Vector3.zero;
-        _verticalVelocity = 0f;
-        _isLaunched = false;
+        horizontalVelocity = Vector3.zero;
+        verticalVelocity = 0f;
+        isLaunched = false;
     }
-
-
-
 }

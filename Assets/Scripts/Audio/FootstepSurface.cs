@@ -1,34 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-
+// put on a floor for its footstep sound, or give it a trigger box zone to override the floor inside that box
 public class FootstepSurface : MonoBehaviour
 {
-    [Header("Sound")]
-    [SerializeField] private FootstepSet _footsteps;
-
-    [Header("Zone")]
-    // leave at zero to use this object's collider, or set a size to override the floor in that area
-    [SerializeField] private Vector3 _zoneSize;
+    [SerializeField] private FootstepSet footsteps;
+    [SerializeField] private BoxCollider zone;
 
     private static readonly List<FootstepSurface> Zones = new List<FootstepSurface>();
 
-    public FootstepSet Footsteps => _footsteps;
-
-    private bool IsZone => _zoneSize != Vector3.zero;
+    public FootstepSet Footsteps => footsteps;
 
     private void OnEnable()
     {
-        if (IsZone) Zones.Add(this);
+        if (zone != null) Zones.Add(this);
     }
 
     private void OnDisable() => Zones.Remove(this);
 
     public static FootstepSet FindZone(Vector3 point)
     {
-        foreach (var zone in Zones)
-            if (new Bounds(zone.transform.position, zone._zoneSize).Contains(point))
-                return zone._footsteps;
+        foreach (var surface in Zones)
+            if (surface.zone.bounds.Contains(point)) return surface.footsteps;
 
         return null;
     }
@@ -36,11 +29,4 @@ public class FootstepSurface : MonoBehaviour
     // domain reload is off, so clear zones left over from the last play
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.SubsystemRegistration)]
     private static void ClearOnPlay() => Zones.Clear();
-
-    private void OnDrawGizmosSelected()
-    {
-        if (!IsZone) return;
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireCube(transform.position, _zoneSize);
-    }
 }

@@ -3,89 +3,70 @@ using UnityEngine.AI;
 
 public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 {
-    [Header("Detection")]
-    [SerializeField] private float _detectionRange = 10f;
-    [SerializeField] private float _attackRange = 2f;
-
-    private EnemyPerception _perception;
+    [Header("Attack")]
+    [SerializeField] private float attackRange = 2f;
+    [SerializeField] private float attackCooldown = 1.5f;
 
     [Header("Investigate")]
-    [SerializeField] private float _investigateDuration = 5f;
+    [SerializeField] private float investigateDuration = 5f;
 
     [Header("Patrol")]
-    [SerializeField] private float _wanderRadius = 8f;
-    [SerializeField] private float _wanderWaitMin = 1f;
-    [SerializeField] private float _wanderWaitMax = 3f;
-    [SerializeField] private Transform[] _patrolPoints;
+    [SerializeField] private float wanderRadius = 8f;
+    [SerializeField] private float wanderWaitMin = 1f;
+    [SerializeField] private float wanderWaitMax = 3f;
+    [SerializeField] private Transform[] patrolPoints;
 
-    [Header("Confused (Post-Teleport)")]
-    [SerializeField] private float _confusedDuration = 3f;
-    [SerializeField] private float _confusedTurnSpeed = 120f;
+    [Header("Confused (after a swap)")]
+    [SerializeField] private float confusedDuration = 3f;
+    [SerializeField] private float confusedTurnSpeed = 120f;
 
     [Header("Destabilise")]
     // turn off for enemies that shouldn't die from a second swap
-    [SerializeField] private bool _secondSwapKills = true;
-    [SerializeField] private float _killGraceTime = 0.25f;
-
-    private float _confusedEndedAt = -999f;
-
-    [Header("Attack")]
-    [SerializeField] private float _attackDamage = 10f;
-    [SerializeField] private float _attackCooldown = 1.5f;
-
-    
-
-    private float _attackTimer = 0f;
-
-    private int _currentPatrolIndex = 0;
-    private bool _isWaiting = false;
-    private float _confusedTimer = 0f;
-    private float _wanderWaitTimer = 0f;
-    private float _wanderWaitDuration = 0f;
+    [SerializeField] private bool secondSwapKills = true;
+    [SerializeField] private float killGraceTime = 0.25f;
 
     public enum AIState { Patrol, Chase, Investigate, Confused }
-    private AIState _currentState = AIState.Patrol;
-    public AIState CurrentState => _currentState;
+    public AIState CurrentState { get; private set; } = AIState.Patrol;
 
-    private NavMeshAgent _agent;
-    private Transform _player;
-    private Vector3? _lastKnownPosition;
-    private float _investigateTimer;
+    private NavMeshAgent agent;
+    private EnemyPerception perception;
+    private Transform player;
+    private Vector3? lastKnownPosition;
 
-    void Awake()
+    private float attackTimer;
+    private float investigateTimer;
+    private float confusedTimer;
+    private float confusedEndedAt = -999f;
+    private int currentPatrolIndex;
+    private bool isWaiting;
+    private float waitTimer;
+    private float waitDuration;
+
+    private void Awake()
     {
-        _agent = GetComponent<NavMeshAgent>();
-        _perception = GetComponent<EnemyPerception>();
-        _agent.stoppingDistance = _attackRange;
+        agent = GetComponent<NavMeshAgent>();
+        perception = GetComponent<EnemyPerception>();
+        agent.stoppingDistance = attackRange;
     }
 
-    void Start()
+    private void Start()
     {
-        GameObject playerObj = GameObject.FindWithTag("Player");
-        if (playerObj != null)
-            _player = playerObj.transform;
+        GameObject playerObject = GameObject.FindWithTag("Player");
+        if (playerObject != null)
+            player = playerObject.transform;
         else
             Debug.LogError("[EnemyAI] No GameObject tagged 'Player' found!");
 
         StartPatrolling();
     }
 
-    void StartPatrolling()
+    private void Update()
     {
-        _currentPatrolIndex = 0;
-        if (_patrolPoints != null && _patrolPoints.Length > 0)
-            _agent.SetDestination(_patrolPoints[0].position);
-        else
-            SetNewWanderDestination();
-    }
-
-    void Update()
-    {
-        if (_player == null) return;
+        if (player == null) return;
         // agent gets turned off while falling into a pit
-        if (!_agent.enabled) return;
+        if (!agent.enabled) return;
 
-        switch (_currentState)
+        switch (CurrentState)
         {
             case AIState.Patrol:      UpdatePatrol();      break;
             case AIState.Chase:       UpdateChase();       break;
@@ -94,205 +75,195 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
         }
     }
 
-    void UpdatePatrol()
+    private void StartPatrolling()
+    {
+        currentPatrolIndex = 0;
+        if (patrolPoints != null && patrolPoints.Length > 0)
+            agent.SetDestination(patrolPoints[0].position);
+        else
+            SetNewWanderDestination();
+    }
+
+    private void UpdatePatrol()
     {
         if (CanSeePlayer())
         {
-            _lastKnownPosition = _player.position;
-            _isWaiting = false;
+            lastKnownPosition = player.position;
+            isWaiting = false;
             TransitionTo(AIState.Chase);
             return;
         }
 
-        if (_patrolPoints != null && _patrolPoints.Length > 0)
-            UpdatePatrolPoints();
+        bool hasPatrol = patrolPoints != null && patrolPoints.Length > 0;
+        if (!WaitAtDestination()) return;
+
+        if (hasPatrol)
+        {
+            currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            agent.SetDestination(patrolPoints[currentPatrolIndex].position);
+        }
         else
-            UpdateRandomWander();
+        {
+            SetNewWanderDestination();
+        }
     }
 
-    void UpdatePatrolPoints()
+    // true once the enemy has reached its destination and waited there, ready to pick the next one
+    private bool WaitAtDestination()
     {
-        if (_agent.remainingDistance <= _agent.stoppingDistance && !_isWaiting)
+        if (agent.remainingDistance <= agent.stoppingDistance && !isWaiting)
         {
-            _isWaiting = true;
-            _wanderWaitDuration = Random.Range(_wanderWaitMin, _wanderWaitMax);
-            _wanderWaitTimer = 0f;
+            isWaiting = true;
+            waitDuration = Random.Range(wanderWaitMin, wanderWaitMax);
+            waitTimer = 0f;
         }
 
-        if (_isWaiting)
+        if (!isWaiting) return false;
+
+        waitTimer += Time.deltaTime;
+        if (waitTimer < waitDuration) return false;
+
+        isWaiting = false;
+        return true;
+    }
+
+    private void SetNewWanderDestination()
+    {
+        Vector3 randomPoint = transform.position + Random.insideUnitSphere * wanderRadius;
+        if (NavMesh.SamplePosition(randomPoint, out NavMeshHit hit, wanderRadius, NavMesh.AllAreas))
+            agent.SetDestination(hit.position);
+    }
+
+    private void UpdateChase()
+    {
+        if (!CanSeePlayer(true))
         {
-            _wanderWaitTimer += Time.deltaTime;
-            if (_wanderWaitTimer >= _wanderWaitDuration)
+            agent.stoppingDistance = 0f;
+            TransitionTo(AIState.Investigate);
+            return;
+        }
+
+        lastKnownPosition = player.position;
+        float distanceToPlayer = Vector3.Distance(transform.position, player.position);
+
+        if (distanceToPlayer <= attackRange)
+        {
+            // stop and attack
+            agent.stoppingDistance = attackRange;
+            agent.SetDestination(player.position);
+
+            attackTimer += Time.deltaTime;
+            if (attackTimer >= attackCooldown)
             {
-                _isWaiting = false;
-                _currentPatrolIndex = (_currentPatrolIndex + 1) % _patrolPoints.Length;
-                _agent.SetDestination(_patrolPoints[_currentPatrolIndex].position);
+                attackTimer = 0f;
+                // one hit kills for now
+                if (player.TryGetComponent(out IKillable killable))
+                    killable.Kill(gameObject.name);
             }
         }
-    }
-
-    void UpdateRandomWander()
-    {
-        if (_agent.remainingDistance <= _agent.stoppingDistance && !_isWaiting)
+        else
         {
-            _isWaiting = true;
-            _wanderWaitDuration = Random.Range(_wanderWaitMin, _wanderWaitMax);
-            _wanderWaitTimer = 0f;
-        }
-
-        if (_isWaiting)
-        {
-            _wanderWaitTimer += Time.deltaTime;
-            if (_wanderWaitTimer >= _wanderWaitDuration)
-            {
-                _isWaiting = false;
-                SetNewWanderDestination();
-            }
+            // byte moved out of attack range, chase him
+            attackTimer = 0f;
+            agent.stoppingDistance = 0f;
+            agent.SetDestination(player.position);
         }
     }
 
-    void SetNewWanderDestination()
+    private void UpdateInvestigate()
     {
-        Vector3 randomDirection = Random.insideUnitSphere * _wanderRadius;
-        randomDirection += transform.position;
-
-        if (NavMesh.SamplePosition(randomDirection, out NavMeshHit hit, _wanderRadius, NavMesh.AllAreas))
-            _agent.SetDestination(hit.position);
-    }
-
-    void UpdateChase()
-{
-    if (!CanSeePlayer(true))
-    {
-        _agent.stoppingDistance = 0f;
-        TransitionTo(AIState.Investigate);
-        return;
-    }
-
-    _lastKnownPosition = _player.position;
-    float distanceToPlayer = Vector3.Distance(transform.position, _player.position);
-
-    if (distanceToPlayer <= _attackRange)
-    {
-        // Stop and attack
-        _agent.stoppingDistance = _attackRange;
-        _agent.SetDestination(_player.position);
-
-        _attackTimer += Time.deltaTime;
-        if (_attackTimer >= _attackCooldown)
+        // no last known position after a teleport, go back to patrolling
+        if (!lastKnownPosition.HasValue)
         {
-            _attackTimer = 0f;
-            // one hit kills for now, damage not used
-            if (_player.TryGetComponent(out IKillable killable))
-                killable.Kill(gameObject.name);
-        }
-    }
-    else
-    {
-        // Player moved out of attack range — chase them
-        _attackTimer = 0f;
-        _agent.stoppingDistance = 0f;
-        _agent.SetDestination(_player.position);
-    }
-}
-
-    void UpdateInvestigate()
-    {
-        if (!_lastKnownPosition.HasValue)
-        {
-            Debug.Log("[EnemyAI] No last known position (teleported). Returning to Patrol.");
             TransitionTo(AIState.Patrol);
             return;
         }
 
-        _agent.SetDestination(_lastKnownPosition.Value);
+        agent.SetDestination(lastKnownPosition.Value);
 
         if (CanSeePlayer(true))
         {
-            _lastKnownPosition = _player.position;
+            lastKnownPosition = player.position;
             TransitionTo(AIState.Chase);
             return;
         }
 
-        _investigateTimer += Time.deltaTime;
-        if (_investigateTimer >= _investigateDuration)
+        investigateTimer += Time.deltaTime;
+        if (investigateTimer >= investigateDuration)
         {
-            _investigateTimer = 0f;
+            investigateTimer = 0f;
             TransitionTo(AIState.Patrol);
         }
     }
 
-    void UpdateConfused()
+    private void UpdateConfused()
     {
-        _agent.ResetPath();
-        transform.Rotate(0f, _confusedTurnSpeed * Time.deltaTime, 0f);
+        agent.ResetPath();
+        transform.Rotate(0f, confusedTurnSpeed * Time.deltaTime, 0f);
 
         // stays stunned for the full time even if it can see byte, otherwise the second swap is impossible
-        _confusedTimer += Time.deltaTime;
-        if (_confusedTimer >= _confusedDuration)
+        confusedTimer += Time.deltaTime;
+        if (confusedTimer >= confusedDuration)
         {
-            _confusedTimer = 0f;
-            _confusedEndedAt = Time.time;
+            confusedTimer = 0f;
+            confusedEndedAt = Time.time;
             TransitionTo(AIState.Patrol);
             StartPatrolling();
         }
     }
 
-    bool IsStillStunned() => _currentState == AIState.Confused || Time.time - _confusedEndedAt <= _killGraceTime;
+    private bool IsStillStunned() => CurrentState == AIState.Confused || Time.time - confusedEndedAt <= killGraceTime;
 
-    bool CanSeePlayer(bool alerted = false) => _perception.CanSeePlayer(transform, _player, alerted);
+    private bool CanSeePlayer(bool alerted = false) => perception.CanSeePlayer(transform, player, alerted);
 
     public void OnTeleported()
     {
         // swapped again while stunned (or just after) = destabilised, so it dies
-        if (_secondSwapKills && IsStillStunned())
+        if (secondSwapKills && IsStillStunned())
         {
             if (TryGetComponent(out IKillable killable)) killable.Kill("destabilise");
             return;
         }
 
-        _confusedTimer = 0f;
-        _lastKnownPosition = null;
-        _investigateTimer = 0f;
-        _isWaiting = false;
+        confusedTimer = 0f;
+        lastKnownPosition = null;
+        investigateTimer = 0f;
+        isWaiting = false;
         TransitionTo(AIState.Confused);
-        Debug.Log($"[EnemyAI] {gameObject.name} teleported — entering Confused state.");
     }
 
     public void ResetState()
     {
-        _lastKnownPosition = null;
-        _investigateTimer = 0f;
-        _confusedTimer = 0f;
-        _confusedEndedAt = -999f;
-        _attackTimer = 0f;
-        _isWaiting = false;
-        _agent.stoppingDistance = _attackRange;
-        _agent.ResetPath();
+        lastKnownPosition = null;
+        investigateTimer = 0f;
+        confusedTimer = 0f;
+        confusedEndedAt = -999f;
+        attackTimer = 0f;
+        isWaiting = false;
+        agent.stoppingDistance = attackRange;
+        agent.ResetPath();
         TransitionTo(AIState.Patrol);
         StartPatrolling();
     }
 
-    void TransitionTo(AIState newState)
+    private void TransitionTo(AIState newState)
     {
-        if (_currentState == newState) return;
-        Debug.Log($"[EnemyAI] {gameObject.name}: {_currentState} → {newState}");
-        _currentState = newState;
+        if (CurrentState == newState) return;
+        // LogStateChange(newState);
+        CurrentState = newState;
     }
 
-    void OnDrawGizmosSelected()
+    // uncomment this method and the call in TransitionTo to log every state change
+    // private void LogStateChange(AIState newState)
+    // {
+    //     Debug.Log($"[EnemyAI] {gameObject.name}: {CurrentState} to {newState}");
+    // }
+
+    private void OnDrawGizmosSelected()
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _detectionRange);
         Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, _attackRange);
+        Gizmos.DrawWireSphere(transform.position, attackRange);
         Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, _wanderRadius);
+        Gizmos.DrawWireSphere(transform.position, wanderRadius);
     }
-
-    
-
-
-
-
 }

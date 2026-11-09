@@ -299,23 +299,23 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b15b79b7eedaf734c96bccaa56a79189, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Swapper
-  _swapAction: {fileID: 1439900584905888074, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _pointAction: {fileID: 5162991466990257933, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _selectAction: {fileID: -8077035414829857580, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _cancelAction: {fileID: 1109582509131226071, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _camera: {fileID: 0}
-  _markerPrefab: {fileID: 278392200524327109, guid: cde65733868e60c4c90aaa37b31ef2fc, type: 3}
-  _swappableLayers:
+  swapAction: {fileID: 1439900584905888074, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  pointAction: {fileID: 5162991466990257933, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  selectAction: {fileID: -8077035414829857580, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  cancelAction: {fileID: 1109582509131226071, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  mainCamera: {fileID: 0}
+  markerPrefab: {fileID: 278392200524327109, guid: cde65733868e60c4c90aaa37b31ef2fc, type: 3}
+  swappableLayers:
     serializedVersion: 2
     m_Bits: 8
-  _sightBlockers:
+  sightBlockers:
     serializedVersion: 2
     m_Bits: 64
-  _swappablesBlockSight: 1
-  _swapRange: 9
-  _eyeHeight: 1.2
-  _markerHeight: 1.5
-  _cooldown: 1
+  swappablesBlockSight: 1
+  swapRange: 9
+  eyeHeight: 1.2
+  markerHeight: 1.5
+  cooldown: 1
 --- !u!143 &8016987879980568618
 CharacterController:
   m_ObjectHideFlags: 0
@@ -353,9 +353,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5436efde72f2ec14ca69b633e65ec9a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMove
-  _settings: {fileID: 11400000, guid: 5bdb19f9f39280942b4cafe8628660d1, type: 2}
-  _moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _camera: {fileID: 0}
+  settings: {fileID: 11400000, guid: 5bdb19f9f39280942b4cafe8628660d1, type: 2}
+  moveAction: {fileID: -1680190386980627800, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  cameraTransform: {fileID: 0}
 --- !u!114 &8455285202130477143
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5d6037ba0d660224bb3896dfc5a5c567, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerJump
-  _jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  jumpAction: {fileID: -2099379676528639254, guid: 052faaac586de48259a63d0c4782560b, type: 3}
 --- !u!114 &4961303089117094056
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -381,8 +381,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9ecb1f8781883c646b64f3f6fe03e4a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::PlayerDeath
-  _spawnPoint: {fileID: 0}
-  _respawnDelay: 0
+  spawnPoint: {fileID: 0}
+  respawnDelay: 0
 --- !u!114 &6191324727559228411
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -395,8 +395,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c5cba6f78f2b2e74098d79b8839ae3a6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVision
-  _codeVisionAction: {fileID: 1701067717930345089, guid: 052faaac586de48259a63d0c4782560b, type: 3}
-  _duration: 3
+  codeVisionAction: {fileID: 1701067717930345089, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  duration: 3
 --- !u!1 &744218486828720990
 GameObject:
   m_ObjectHideFlags: 0
@@ -928,10 +928,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5e451aa0e05f7034eab256d386441b2e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::ByteAnimator
-  _controller: {fileID: 8016987879980568618}
-  _topClipSpeed: 2.72
-  _maxPlaybackRate: 3
-  _speedDamping: 0.08
+  controller: {fileID: 8016987879980568618}
+  topClipSpeed: 2.72
+  maxPlaybackRate: 3
+  speedDamping: 0.08
 --- !u!82 &8247202831861660587
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1041,21 +1041,21 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 102cef398c56bf34cbdde14a0117a5bf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::FootstepAudio
-  _controller: {fileID: 8016987879980568618}
-  _defaultFootsteps: {fileID: 11400000, guid: 174803b6649252444afb65cd4a656de3, type: 2}
-  _groundLayers:
+  controller: {fileID: 8016987879980568618}
+  defaultFootsteps: {fileID: 11400000, guid: 174803b6649252444afb65cd4a656de3, type: 2}
+  groundLayers:
     serializedVersion: 2
     m_Bits: 136
-  _checkDistance: 1.5
-  _landHeight: 0.03
-  _liftHeight: 0.06
-  _settleSpeed: 0.05
-  _runSpeed: 10
-  _minSpeed: 0.2
-  _minGap: 0.12
-  _volume: 0.6
-  _pitchVariation: 0.08
-  _volumeVariation: 0.1
+  checkDistance: 1.5
+  landHeight: 0.03
+  liftHeight: 0.06
+  settleSpeed: 0.05
+  runSpeed: 10
+  minSpeed: 0.2
+  minGap: 0.12
+  volume: 0.6
+  pitchVariation: 0.08
+  volumeVariation: 0.1
 --- !u!1 &2408469621939380552
 GameObject:
   m_ObjectHideFlags: 0

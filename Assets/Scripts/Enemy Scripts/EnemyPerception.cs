@@ -3,19 +3,14 @@ using UnityEngine;
 public class EnemyPerception : MonoBehaviour
 {
     [Header("Field of View")]
-    [SerializeField, Range(0f, 180f)] private float _innerAngle = 40f;
-    [SerializeField, Range(0f, 180f)] private float _outerAngle = 80f;
-    [SerializeField, Min(0f)] private float _detectionRange = 10f;
-    [SerializeField, Min(0f)] private float _peripheralRange = 4f;
+    [SerializeField, Range(0f, 180f)] private float innerAngle = 40f;
+    [SerializeField, Range(0f, 180f)] private float outerAngle = 80f;
+    [SerializeField, Min(0f)] private float detectionRange = 10f;
+    [SerializeField, Min(0f)] private float peripheralRange = 4f;
 
     [Header("Line of Sight")]
-    [Tooltip("Include the player's layer AND any layers that should block sight (walls, environment, etc.)")]
-    [SerializeField] private LayerMask _sightBlockMask = -1;
-
-    public float OuterAngle      => _outerAngle;
-    public float InnerAngle      => _innerAngle;
-    public float DetectionRange  => _detectionRange;
-    public float PeripheralRange => _peripheralRange;
+    // include byte's layer and anything that should block sight (walls etc)
+    [SerializeField] private LayerMask sightBlockMask = -1;
 
     private const int ArcSegments = 20;
 
@@ -23,29 +18,25 @@ public class EnemyPerception : MonoBehaviour
     {
         if (player == null) return false;
 
-        Vector3 rawDirection = player.position - origin.position;
-        float distanceToPlayer = rawDirection.magnitude;
-
+        Vector3 toPlayer = player.position - origin.position;
+        float distanceToPlayer = toPlayer.magnitude;
         if (distanceToPlayer < Mathf.Epsilon) return true;
 
-        
-        Vector3 dirToPlayer = rawDirection / distanceToPlayer;
+        Vector3 dirToPlayer = toPlayer / distanceToPlayer;
         float angleToPlayer = Vector3.Angle(origin.forward, dirToPlayer);
 
         // once alerted it tracks byte all round, the cone only matters for spotting him
-        if (!alerted && angleToPlayer > _outerAngle) return false;
+        if (!alerted && angleToPlayer > outerAngle) return false;
 
-        // Full range inside inner cone, lerp down to peripheral range toward the outer edge
-        float effectiveRange = alerted || angleToPlayer <= _innerAngle
-            ? _detectionRange
-            : Mathf.Lerp(_detectionRange, _peripheralRange,
-                Mathf.InverseLerp(_innerAngle, _outerAngle, angleToPlayer));
+        // full range inside the inner cone, shrinking to peripheral range at the outer edge
+        float effectiveRange = alerted || angleToPlayer <= innerAngle
+            ? detectionRange
+            : Mathf.Lerp(detectionRange, peripheralRange, Mathf.InverseLerp(innerAngle, outerAngle, angleToPlayer));
 
         if (distanceToPlayer > effectiveRange) return false;
 
-        // Ignore triggers so detection zones and pickups don't block sight
-        if (!Physics.Raycast(origin.position, dirToPlayer, out RaycastHit hit, effectiveRange,
-                _sightBlockMask, QueryTriggerInteraction.Ignore))
+        // ignore triggers so detection zones don't block sight
+        if (!Physics.Raycast(origin.position, dirToPlayer, out RaycastHit hit, effectiveRange, sightBlockMask, QueryTriggerInteraction.Ignore))
             return false;
 
         return hit.collider.CompareTag("Player");
@@ -53,36 +44,33 @@ public class EnemyPerception : MonoBehaviour
 
     private void OnValidate()
     {
-        // Prevent the lerp inverting if these are set the wrong way round in the inspector
-        _innerAngle = Mathf.Min(_innerAngle, _outerAngle);
-        _peripheralRange = Mathf.Min(_peripheralRange, _detectionRange);
+        // stop the lerp inverting if these are set the wrong way round in the inspector
+        innerAngle = Mathf.Min(innerAngle, outerAngle);
+        peripheralRange = Mathf.Min(peripheralRange, detectionRange);
     }
 
+    // only draws when the enemy is selected and gizmos are on in the scene view
     private void OnDrawGizmosSelected()
     {
-        DrawConeGizmo(Color.green, _innerAngle, _detectionRange);
-        DrawConeGizmo(new Color(1f, 0.5f, 0f), _outerAngle, _peripheralRange);
+        DrawConeGizmo(Color.green, innerAngle, detectionRange);
+        DrawConeGizmo(new Color(1f, 0.5f, 0f), outerAngle, peripheralRange);
     }
 
     private void DrawConeGizmo(Color color, float halfAngle, float range)
     {
         Gizmos.color = color;
-
         Gizmos.DrawRay(transform.position, transform.forward * range);
-
-        Vector3 left = Quaternion.Euler(0f, -halfAngle, 0f) * transform.forward * range;
-        Vector3 right = Quaternion.Euler(0f, halfAngle, 0f) * transform.forward * range;
-        Gizmos.DrawRay(transform.position, left);
-        Gizmos.DrawRay(transform.position, right);
+        Gizmos.DrawRay(transform.position, Quaternion.Euler(0f, -halfAngle, 0f) * transform.forward * range);
+        Gizmos.DrawRay(transform.position, Quaternion.Euler(0f, halfAngle, 0f) * transform.forward * range);
 
         float step = halfAngle * 2f / ArcSegments;
-        Vector3 prev = transform.position + Quaternion.Euler(0f, -halfAngle, 0f) * transform.forward * range;
+        Vector3 previous = transform.position + Quaternion.Euler(0f, -halfAngle, 0f) * transform.forward * range;
 
         for (int i = 1; i <= ArcSegments; i++)
         {
             Vector3 next = transform.position + Quaternion.Euler(0f, -halfAngle + step * i, 0f) * transform.forward * range;
-            Gizmos.DrawLine(prev, next);
-            prev = next;
+            Gizmos.DrawLine(previous, next);
+            previous = next;
         }
     }
 }

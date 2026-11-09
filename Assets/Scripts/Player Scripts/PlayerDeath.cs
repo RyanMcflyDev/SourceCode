@@ -4,53 +4,52 @@ using UnityEngine;
 public class PlayerDeath : MonoBehaviour, IKillable
 {
     [Header("Respawn")]
-    [SerializeField] private Transform _spawnPoint;
-    [SerializeField] private float _respawnDelay = 0.25f;
+    [SerializeField] private Transform spawnPoint;
+    [SerializeField] private float respawnDelay = 0.25f;
 
-    private CharacterController _controller;
-    private bool _isDead;
+    private CharacterController controller;
 
-    public bool IsDead => _isDead;
+    public bool IsDead { get; private set; }
 
     private void Awake()
     {
-        _controller = GetComponent<CharacterController>();
+        controller = GetComponent<CharacterController>();
 
-        if (_spawnPoint == null)
+        if (spawnPoint == null)
             Debug.LogWarning("[PlayerDeath] No spawn point set");
     }
 
     private void OnEnable() => GameEvents.SpawnPointChanged += OnSpawnPointChanged;
     private void OnDisable() => GameEvents.SpawnPointChanged -= OnSpawnPointChanged;
 
-    private void OnSpawnPointChanged(Transform spawnPoint) => _spawnPoint = spawnPoint;
+    private void OnSpawnPointChanged(Transform newSpawnPoint) => spawnPoint = newSpawnPoint;
 
     public void Kill(string cause)
     {
         // byte has two colliders so this can get called twice
-        if (_isDead) return;
-        _isDead = true;
+        if (IsDead) return;
+        IsDead = true;
 
         Debug.Log($"[PlayerDeath] Killed by {cause}");
         GameEvents.RaisePlayerDied(cause);
 
-        Invoke(nameof(Respawn), _respawnDelay);
+        Invoke(nameof(Respawn), respawnDelay);
     }
 
     private void Respawn()
     {
-        Vector3 spawnPosition = _spawnPoint != null ? _spawnPoint.position : transform.position;
-        float feetOffset = transform.position.y - _controller.bounds.min.y;
+        Vector3 spawnPosition = spawnPoint != null ? spawnPoint.position : transform.position;
+        float feetOffset = transform.position.y - controller.bounds.min.y;
 
         // same as swapper, controller has to be off or it snaps back
-        _controller.enabled = false;
+        controller.enabled = false;
         transform.position = spawnPosition + Vector3.up * feetOffset;
-        _controller.enabled = true;
+        controller.enabled = true;
 
         foreach (var resettable in GetComponents<IResettable>())
             resettable.ResetState();
 
-        _isDead = false;
+        IsDead = false;
         GameEvents.RaisePlayerRespawned();
     }
 }
