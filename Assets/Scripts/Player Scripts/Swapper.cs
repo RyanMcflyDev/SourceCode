@@ -190,7 +190,8 @@ public class Swapper : MonoBehaviour
 
             if (sideways.magnitude <= LedgeSnapDistance)
             {
-                agent.Warp(hit.position);
+                // warp to body height, warping to the navmesh point leaves the enemy half in the floor
+                agent.Warp(hit.position + Vector3.up * agent.baseOffset);
                 return;
             }
         }

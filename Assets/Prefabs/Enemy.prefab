@@ -237,3 +237,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b8fe274c5ef64540a85fcd24777515a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::EnemyDeath
+  dissolveMaterial: {fileID: 2100000, guid: 59c34ed5183ade642aab98fe023f4cdf, type: 2}
+  dissolveTime: 1
+  noiseHeight: 1
+  cutoffProperty: Vector1_CFBBCBA
+  colorProperty: Color_87DA54D1
