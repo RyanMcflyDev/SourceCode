@@ -3,7 +3,8 @@
     "rootNamespace": "",
     "references": [
         "SourceCode.Core",
-        "Unity.InputSystem"
+        "Unity.InputSystem",
+        "KinoGlitch.Runtime"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -15,5 +15,6 @@
   <Project Path="Polyperfect.People.csproj" />
   <Project Path="RealStep.Demo.csproj" />
   <Project Path="SourceCode.Core.csproj" />
+  <Project Path="KinoGlitch.Runtime.csproj" />
   <Project Path="RealStep.Editor.csproj" />
 </Solution>
