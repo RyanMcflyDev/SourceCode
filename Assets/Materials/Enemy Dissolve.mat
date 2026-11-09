@@ -45,12 +45,12 @@ Material:
     - Boolean_7BA77F51: 0
     - ENUM_A9F6D788: 0
     - ENUM_BED51E75: 2
-    - Vector1_36B9162F: 50
-    - Vector1_5C4FEA22: 0.05
+    - Vector1_36B9162F: 40
+    - Vector1_5C4FEA22: 0.1
     - Vector1_98FB0F60: 0
-    - Vector1_9C074DA1: 1
+    - Vector1_9C074DA1: 0.6
     - Vector1_A2ECFC7B: 0.05
-    - Vector1_C8E292BE: 100
+    - Vector1_C8E292BE: 60
     - Vector1_C8EB9E54: 1
     - Vector1_CFBBCBA: 10
     - Vector1_DE929E18: 50

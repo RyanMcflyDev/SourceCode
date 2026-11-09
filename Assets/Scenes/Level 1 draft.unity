@@ -30311,6 +30311,14 @@ PrefabInstance:
       propertyPath: 'patrolPoints.Array.data[1]'
       value: 
       objectReference: {fileID: 1206191895}
+    - target: {fileID: 1977219982642520746, guid: 4ebd43baef80064409af23e6bb607c25, type: 3}
+      propertyPath: noiseHeight
+      value: 0.6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1977219982642520746, guid: 4ebd43baef80064409af23e6bb607c25, type: 3}
+      propertyPath: dissolveTime
+      value: 0.8
+      objectReference: {fileID: 0}
     - target: {fileID: 7490096938639379890, guid: 4ebd43baef80064409af23e6bb607c25, type: 3}
       propertyPath: m_LocalPosition.x
       value: 11.89
