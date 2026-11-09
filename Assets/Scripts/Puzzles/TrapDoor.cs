@@ -16,7 +16,7 @@ public class TrapDoor : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float timeToDie = 5f;
 
-    private Renderer lidRenderer;
+    private Renderer[] lidRenderers;
     private Material closedMaterial;
     private bool isOpen;
     private bool isFilled;
@@ -24,8 +24,8 @@ public class TrapDoor : MonoBehaviour
 
     private void Awake()
     {
-        lidRenderer = lid.GetComponent<Renderer>();
-        closedMaterial = lidRenderer.sharedMaterial;
+        lidRenderers = lid.GetComponentsInChildren<Renderer>();
+        closedMaterial = lidRenderers[0].sharedMaterial;
     }
 
     private void OnEnable() => GameEvents.PlayerDied += OnPlayerDied;
@@ -37,7 +37,7 @@ public class TrapDoor : MonoBehaviour
         isFilled = false;
         timeInShaft = 0f;
         lid.SetActive(true);
-        lidRenderer.sharedMaterial = closedMaterial;
+        SetLidMaterial(closedMaterial);
     }
 
     private void FixedUpdate()
@@ -77,10 +77,15 @@ public class TrapDoor : MonoBehaviour
     {
         isFilled = true;
         lid.SetActive(true);
-        lidRenderer.sharedMaterial = filledMaterial;
+        SetLidMaterial(filledMaterial);
 
         // switched off not destroyed so the room reset brings it back
         enemy.SetActive(false);
+    }
+
+    private void SetLidMaterial(Material material)
+    {
+        foreach (Renderer plank in lidRenderers) plank.sharedMaterial = material;
     }
 
     private Collider FindInArea(BoxCollider area, string tag)
