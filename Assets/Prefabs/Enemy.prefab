@@ -197,7 +197,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVisionLook
   normalMaterial: {fileID: 2100000, guid: cc5e346cce55e134db40a732c5e36151, type: 2}
-  codeVisionMaterial: {fileID: 2100000, guid: de09c5a98dc0e474e92906b38da3619d, type: 2}
+  codeVisionMaterial: {fileID: 2100000, guid: b3937783beb53674687224984ca7c492, type: 2}
 --- !u!54 &3739252923319024659
 Rigidbody:
   m_ObjectHideFlags: 0

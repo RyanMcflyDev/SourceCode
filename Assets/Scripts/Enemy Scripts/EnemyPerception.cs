@@ -12,11 +12,17 @@ public class EnemyPerception : MonoBehaviour
     // include byte's layer and anything that should block sight (walls etc)
     [SerializeField] private LayerMask sightBlockMask = -1;
 
+    [Header("Scripted")]
+    // can't see byte at all until SetBlind(false) is called (level 1 enemy waits for glitch's talk)
+    [SerializeField] private bool blind;
+
     private const int ArcSegments = 20;
+
+    public void SetBlind(bool value) => blind = value;
 
     public bool CanSeePlayer(Transform origin, Transform player, bool alerted = false)
     {
-        if (player == null) return false;
+        if (blind || player == null) return false;
 
         Vector3 toPlayer = player.position - origin.position;
         float distanceToPlayer = toPlayer.magnitude;
