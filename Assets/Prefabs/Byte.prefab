@@ -206,6 +206,7 @@ GameObject:
   - component: {fileID: 8455285202130477143}
   - component: {fileID: 4961303089117094056}
   - component: {fileID: 6191324727559228411}
+  - component: {fileID: 1392288058938433673}
   m_Layer: 0
   m_Name: Byte
   m_TagString: Player
@@ -335,7 +336,7 @@ CharacterController:
   m_Enabled: 1
   serializedVersion: 3
   m_Height: 2
-  m_Radius: 0.5
+  m_Radius: 0.3
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
@@ -397,6 +398,23 @@ MonoBehaviour:
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVision
   codeVisionAction: {fileID: 1701067717930345089, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   duration: 3
+--- !u!114 &1392288058938433673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527496440811986219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4b23f67943ebff94cb07cf6044a13801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SourceCode.Gameplay::PlayerLock
+  controls:
+  - {fileID: 8073544242463176266}
+  - {fileID: 8455285202130477143}
+  - {fileID: 5934626931640475634}
+  - {fileID: 6191324727559228411}
 --- !u!1 &744218486828720990
 GameObject:
   m_ObjectHideFlags: 0

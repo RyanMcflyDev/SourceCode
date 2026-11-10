@@ -40,6 +40,9 @@ public class EnemyDeath : MonoBehaviour, IKillable, IResettable
             dissolveInstance = new Material(dissolveMaterial);
             if (normalMaterial.HasProperty("_BaseColor"))
                 dissolveInstance.SetColor(colorProperty, normalMaterial.GetColor("_BaseColor"));
+            // textured dissolve materials keep the model's look, the enemy one has no texture slot
+            if (dissolveInstance.HasProperty("_BaseMap") && normalMaterial.HasProperty("_BaseMap"))
+                dissolveInstance.SetTexture("_BaseMap", normalMaterial.GetTexture("_BaseMap"));
         }
     }
 
@@ -64,9 +67,20 @@ public class EnemyDeath : MonoBehaviour, IKillable, IResettable
 
         // the shader cuts by world height, sweep from the top of the enemy to below its feet
         // worked out from the transform as renderer bounds can lag a frame behind a swap teleport
-        Transform model = meshRenderer.transform;
-        float centre = model.TransformPoint(meshRenderer.localBounds.center).y;
-        float halfHeight = meshRenderer.localBounds.extents.y * model.lossyScale.y;
+        float centre;
+        float halfHeight;
+        if (meshRenderer is SkinnedMeshRenderer)
+        {
+            // skinned bounds are along the root bone (sideways on the people models), world bounds give the real height
+            centre = meshRenderer.bounds.center.y;
+            halfHeight = meshRenderer.bounds.extents.y;
+        }
+        else
+        {
+            Transform model = meshRenderer.transform;
+            centre = model.TransformPoint(meshRenderer.localBounds.center).y;
+            halfHeight = meshRenderer.localBounds.extents.y * model.lossyScale.y;
+        }
         cutoffTop = centre + halfHeight;
         cutoffBottom = centre - halfHeight - noiseHeight;
         dissolveTimer = 0f;

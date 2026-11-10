@@ -6,8 +6,8 @@
   <Project Path="SingularityGroup.HotReload.Editor.csproj" />
   <Project Path="SingularityGroup.HotReload.Runtime.csproj" />
   <Project Path="GameCreator.Tests.Core.csproj" />
-  <Project Path="Polyperfect.Common.csproj" />
   <Project Path="SourceCode.Gameplay.csproj" />
+  <Project Path="Polyperfect.Common.csproj" />
   <Project Path="VHierarchy.csproj" />
   <Project Path="GameCreator.Editor.Dialogue.csproj" />
   <Project Path="RealStep.Runtime.csproj" />

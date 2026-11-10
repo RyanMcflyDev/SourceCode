@@ -1,7 +1,7 @@
 using KinoGlitch;
 using UnityEngine;
 
-// short glitch burst when byte dies, it covers the room snapping back
+// short glitch burst when byte dies (covers the room snapping back), story moments can call Pulse too
 [RequireComponent(typeof(AnalogGlitchController))]
 public class DeathGlitch : MonoBehaviour
 {
@@ -21,7 +21,10 @@ public class DeathGlitch : MonoBehaviour
     private void OnEnable() => GameEvents.PlayerDied += OnPlayerDied;
     private void OnDisable() => GameEvents.PlayerDied -= OnPlayerDied;
 
-    private void OnPlayerDied(string cause) => endTime = Time.unscaledTime + duration;
+    private void OnPlayerDied(string cause) => Pulse(duration);
+
+    // for story moments, gc2 can call this with Invoke Method
+    public void Pulse(float seconds) => endTime = Time.unscaledTime + seconds;
 
     private void Update()
     {

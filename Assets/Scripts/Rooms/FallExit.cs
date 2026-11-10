@@ -16,9 +16,15 @@ public class FallExit : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (player != null || !other.CompareTag("Player")) return;
+        if (other.CompareTag("Player")) Drop(other.transform);
+    }
 
-        player = other.transform;
+    // also called by story sequences that drop byte themselves
+    public void Drop(Transform target)
+    {
+        if (player != null) return;
+
+        player = target;
         floorY = floor.transform.position.y;
         foreach (Collider c in floor.GetComponentsInChildren<Collider>()) c.enabled = false;
     }
