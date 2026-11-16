@@ -24285,9 +24285,9 @@ MonoBehaviour:
     - rid: 5561021088446546567
       type: {class: Content, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
       data:
-        m_Dirty: 0
+        m_Dirty: 6517
         m_Data:
-          m_Keys: bd32c1d5050a1b2a7a64b9d67c436f13dcd275ed3ce3a5ad416c0a65b488ebe914ec643de0b4c480bbeaeb931117deab63dea0e4b7db6d4c4d57fbefe7d5efd59c878801i
+          m_Keys: bd32c1d5050a1b2a7a64b9d67c436f133ce3a5ad416c0a65b488ebe914ec643de0b4c4801117deab63dea0e44d57fbefe7d5efd59c878801i
           m_Values:
           - m_Id: -708758851
             m_Value:
@@ -24301,9 +24301,6 @@ MonoBehaviour:
           - m_Id: 326058876
             m_Value:
               rid: 5561021088446546571
-          - m_Id: -311045412
-            m_Value:
-              rid: 5561021088446546572
           - m_Id: -1381637316
             m_Value:
               rid: 5561021088446546573
@@ -24319,18 +24316,12 @@ MonoBehaviour:
           - m_Id: -2134592288
             m_Value:
               rid: 5561021088446546577
-          - m_Id: -1813255493
-            m_Value:
-              rid: 5561021088446546578
           - m_Id: -1411508463
             m_Value:
               rid: 5561021088446546579
           - m_Id: -459219357
             m_Value:
               rid: 5561021088446546580
-          - m_Id: 1282268087
-            m_Value:
-              rid: 5561021088446546581
           - m_Id: -268740787
             m_Value:
               rid: 5561021088446546582
@@ -24341,7 +24332,7 @@ MonoBehaviour:
             m_Value:
               rid: 5561021088446546584
         m_Nodes:
-          m_Keys: bd32c1d5050a1b2a7a64b9d67c436f13dcd275ed3ce3a5ad416c0a65b488ebe914ec643de0b4c480bbeaeb931117deab63dea0e4b7db6d4c4d57fbefe7d5efd59c878801i
+          m_Keys: bd32c1d5050a1b2a7a64b9d67c436f133ce3a5ad416c0a65b488ebe914ec643de0b4c4801117deab63dea0e44d57fbefe7d5efd59c878801i
           m_Values:
           - m_Id: -708758851
             m_Parent: -1
@@ -24353,9 +24344,6 @@ MonoBehaviour:
             m_Parent: -1
             m_Children: 
           - m_Id: 326058876
-            m_Parent: -1
-            m_Children: 
-          - m_Id: -311045412
             m_Parent: -1
             m_Children: 
           - m_Id: -1381637316
@@ -24373,16 +24361,10 @@ MonoBehaviour:
           - m_Id: -2134592288
             m_Parent: -1
             m_Children: 
-          - m_Id: -1813255493
-            m_Parent: -1
-            m_Children: 
           - m_Id: -1411508463
             m_Parent: -1
             m_Children: 
           - m_Id: -459219357
-            m_Parent: -1
-            m_Children: 
-          - m_Id: 1282268087
             m_Parent: -1
             m_Children: 
           - m_Id: -268740787
@@ -24394,7 +24376,7 @@ MonoBehaviour:
           - m_Id: 25724828
             m_Parent: -1
             m_Children: 
-        m_Roots: bd32c1d5050a1b2a7a64b9d67c436f13dcd275ed3ce3a5ad416c0a65b488ebe914ec643de0b4c480bbeaeb931117deab63dea0e4b7db6d4c4d57fbefe7d5efd59c878801i
+        m_Roots: bd32c1d5050a1b2a7a64b9d67c436f133ce3a5ad416c0a65b488ebe914ec643de0b4c48063dea0e41117deab4d57fbefe7d5efd59c878801i
         m_Roles:
         - m_Actor: {fileID: 11400000, guid: decff52ade1b4c948ade0bea6185ee53, type: 2}
           m_Target:
@@ -24589,54 +24571,6 @@ MonoBehaviour:
         m_Timeout:
           m_Property:
             rid: 5561021088446546604
-        m_Tag:
-          m_String: 
-        m_Jump:
-          m_Jump: 0
-          m_JumpTo:
-            m_String: 
-    - rid: 5561021088446546572
-      type: {class: Node, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
-      data:
-        m_NodeType:
-          rid: 5561021088446546605
-        m_Conditions:
-          m_Conditions:
-            m_Conditions: []
-        m_Text:
-          m_Text:
-            m_Property:
-              rid: 5561021088446546606
-          m_Values: []
-        m_Audio:
-          m_Property:
-            rid: 5561021088446546607
-        m_Acting:
-          m_Portrait: 3
-          m_Actor: {fileID: 11400000, guid: decff52ade1b4c948ade0bea6185ee53, type: 2}
-          m_Expression: 0
-        m_Animation: {fileID: 0}
-        m_AnimationData:
-          m_AvatarMask: {fileID: 0}
-          m_BlendMode: 0
-          m_Delay: 0
-          m_Speed: 1
-          m_UseRootMotion: 0
-          m_TransitionIn: 0.1
-          m_TransitionOut: 0.1
-        m_Sequence:
-          m_Tracks:
-          - rid: 5561021088446546608
-        m_OnStart:
-          m_Instructions:
-            m_Instructions: []
-        m_OnFinish:
-          m_Instructions:
-            m_Instructions: []
-        m_Duration: 0
-        m_Timeout:
-          m_Property:
-            rid: 5561021088446546609
         m_Tag:
           m_String: 
         m_Jump:
@@ -24883,54 +24817,6 @@ MonoBehaviour:
           m_Jump: 0
           m_JumpTo:
             m_String: 
-    - rid: 5561021088446546578
-      type: {class: Node, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
-      data:
-        m_NodeType:
-          rid: 5561021088446546635
-        m_Conditions:
-          m_Conditions:
-            m_Conditions: []
-        m_Text:
-          m_Text:
-            m_Property:
-              rid: 5561021088446546636
-          m_Values: []
-        m_Audio:
-          m_Property:
-            rid: 5561021088446546637
-        m_Acting:
-          m_Portrait: 3
-          m_Actor: {fileID: 11400000, guid: decff52ade1b4c948ade0bea6185ee53, type: 2}
-          m_Expression: 0
-        m_Animation: {fileID: 0}
-        m_AnimationData:
-          m_AvatarMask: {fileID: 0}
-          m_BlendMode: 0
-          m_Delay: 0
-          m_Speed: 1
-          m_UseRootMotion: 0
-          m_TransitionIn: 0.1
-          m_TransitionOut: 0.1
-        m_Sequence:
-          m_Tracks:
-          - rid: 5561021088446546638
-        m_OnStart:
-          m_Instructions:
-            m_Instructions: []
-        m_OnFinish:
-          m_Instructions:
-            m_Instructions: []
-        m_Duration: 0
-        m_Timeout:
-          m_Property:
-            rid: 5561021088446546639
-        m_Tag:
-          m_String: 
-        m_Jump:
-          m_Jump: 0
-          m_JumpTo:
-            m_String: 
     - rid: 5561021088446546579
       type: {class: Node, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
       data:
@@ -25021,54 +24907,6 @@ MonoBehaviour:
         m_Timeout:
           m_Property:
             rid: 5561021088446546649
-        m_Tag:
-          m_String: 
-        m_Jump:
-          m_Jump: 0
-          m_JumpTo:
-            m_String: 
-    - rid: 5561021088446546581
-      type: {class: Node, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
-      data:
-        m_NodeType:
-          rid: 5561021088446546650
-        m_Conditions:
-          m_Conditions:
-            m_Conditions: []
-        m_Text:
-          m_Text:
-            m_Property:
-              rid: 5561021088446546651
-          m_Values: []
-        m_Audio:
-          m_Property:
-            rid: 5561021088446546652
-        m_Acting:
-          m_Portrait: 3
-          m_Actor: {fileID: 11400000, guid: decff52ade1b4c948ade0bea6185ee53, type: 2}
-          m_Expression: 0
-        m_Animation: {fileID: 0}
-        m_AnimationData:
-          m_AvatarMask: {fileID: 0}
-          m_BlendMode: 0
-          m_Delay: 0
-          m_Speed: 1
-          m_UseRootMotion: 0
-          m_TransitionIn: 0.1
-          m_TransitionOut: 0.1
-        m_Sequence:
-          m_Tracks:
-          - rid: 5561021088446546653
-        m_OnStart:
-          m_Instructions:
-            m_Instructions: []
-        m_OnFinish:
-          m_Instructions:
-            m_Instructions: []
-        m_Duration: 0
-        m_Timeout:
-          m_Property:
-            rid: 5561021088446546654
         m_Tag:
           m_String: 
         m_Jump:
@@ -25307,28 +25145,6 @@ MonoBehaviour:
       type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
         m_Value: 3
-    - rid: 5561021088446546605
-      type: {class: NodeTypeText, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
-      data:
-        m_Breakpoint: 0
-        m_IsEnabled: 1
-        m_Options: 0
-    - rid: 5561021088446546606
-      type: {class: GetStringTextArea, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data:
-        m_Text:
-          m_Text: No cellar? Then where are we standing?
-    - rid: 5561021088446546607
-      type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data: 
-    - rid: 5561021088446546608
-      type: {class: TrackDefault, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
-      data:
-        m_Clips: []
-    - rid: 5561021088446546609
-      type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data:
-        m_Value: 3
     - rid: 5561021088446546610
       type: {class: NodeTypeText, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
       data:
@@ -25427,7 +25243,7 @@ MonoBehaviour:
       type: {class: GetStringTextArea, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
         m_Text:
-          m_Text: Then the sky split open, and I was here. Like this.
+          m_Text: Then the sky split open, and I was here. Like this....I used to have hands.
     - rid: 5561021088446546632
       type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data: 
@@ -25436,28 +25252,6 @@ MonoBehaviour:
       data:
         m_Clips: []
     - rid: 5561021088446546634
-      type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data:
-        m_Value: 3
-    - rid: 5561021088446546635
-      type: {class: NodeTypeText, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
-      data:
-        m_Breakpoint: 0
-        m_IsEnabled: 1
-        m_Options: 0
-    - rid: 5561021088446546636
-      type: {class: GetStringTextArea, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data:
-        m_Text:
-          m_Text: ...I used to have hands.
-    - rid: 5561021088446546637
-      type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data: 
-    - rid: 5561021088446546638
-      type: {class: TrackDefault, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
-      data:
-        m_Clips: []
-    - rid: 5561021088446546639
       type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
         m_Value: 3
@@ -25471,7 +25265,7 @@ MonoBehaviour:
       type: {class: GetStringTextArea, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
         m_Text:
-          m_Text: Your family too?
+          m_Text: You lost your family too?
     - rid: 5561021088446546642
       type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data: 
@@ -25493,7 +25287,7 @@ MonoBehaviour:
       type: {class: GetStringTextArea, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
         m_Text:
-          m_Text: Gone. Just like that.
+          m_Text: Everything gone. Just like that.
     - rid: 5561021088446546647
       type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data: 
@@ -25502,28 +25296,6 @@ MonoBehaviour:
       data:
         m_Clips: []
     - rid: 5561021088446546649
-      type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data:
-        m_Value: 3
-    - rid: 5561021088446546650
-      type: {class: NodeTypeText, ns: GameCreator.Runtime.Dialogue, asm: GameCreator.Runtime.Dialogue}
-      data:
-        m_Breakpoint: 0
-        m_IsEnabled: 1
-        m_Options: 0
-    - rid: 5561021088446546651
-      type: {class: GetStringTextArea, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data:
-        m_Text:
-          m_Text: I should have been there. That's what I'm for.
-    - rid: 5561021088446546652
-      type: {class: GetAudioNone, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
-      data: 
-    - rid: 5561021088446546653
-      type: {class: TrackDefault, ns: GameCreator.Runtime.VisualScripting, asm: GameCreator.Runtime.Core}
-      data:
-        m_Clips: []
-    - rid: 5561021088446546654
       type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
         m_Value: 3
@@ -27584,7 +27356,7 @@ MonoBehaviour:
     - rid: 5561021088446546718
       type: {class: GetDecimalDecimal, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
-        m_Value: 3
+        m_Value: 0.5
     - rid: 5561021088446546719
       type: {class: GetGameObjectInstance, ns: GameCreator.Runtime.Common, asm: GameCreator.Runtime.Core}
       data:
