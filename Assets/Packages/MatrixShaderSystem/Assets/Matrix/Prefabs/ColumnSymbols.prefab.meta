@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: d8657fc45d7dc9140968ea0eecae81a1
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Prefabs/ColumnSymbols.prefab
+  uploadId: 704188

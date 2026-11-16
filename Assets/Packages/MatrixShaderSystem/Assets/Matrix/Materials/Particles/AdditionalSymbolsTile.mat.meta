@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 9895bc3bdf3a55d4482f0aeed9b62886
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Materials/Particles/AdditionalSymbolsTile.mat
+  uploadId: 704188

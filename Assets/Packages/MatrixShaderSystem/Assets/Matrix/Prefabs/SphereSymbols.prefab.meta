@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 539661f71851e7048aa42aa04bb2deb6
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Prefabs/SphereSymbols.prefab
+  uploadId: 704188

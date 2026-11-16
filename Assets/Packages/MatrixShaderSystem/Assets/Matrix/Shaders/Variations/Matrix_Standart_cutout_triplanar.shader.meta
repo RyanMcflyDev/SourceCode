@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 40b0f30c9a56446429eb98aaf769a3ca
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Shaders/Variations/Matrix_Standart_cutout_triplanar.shader
+  uploadId: 704188

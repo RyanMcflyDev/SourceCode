@@ -176,7 +176,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVisionLook
   normalMaterial: {fileID: 0}
-  codeVisionMaterial: {fileID: 2100000, guid: 5a867635d2476dc4daead1d936fe3bf6, type: 2}
+  codeVisionMaterial: {fileID: 2100000, guid: 8ea4099716c9e434987350e7f3fe8ae7, type: 2}
 --- !u!4 &5978141095233507735 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 7256602617229109319, guid: 681e8c7fed95aa7419814bc1821d704e, type: 3}

@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 83e17966a52771d4c81640db3bcb4709
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Materials/StandartSymbolBlur.mat
+  uploadId: 704188

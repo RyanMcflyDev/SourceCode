@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: 2fadc9bd891836c4c902e9d8d12287b5
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Materials/Particles/AdditionalSymbols.mat
+  uploadId: 704188

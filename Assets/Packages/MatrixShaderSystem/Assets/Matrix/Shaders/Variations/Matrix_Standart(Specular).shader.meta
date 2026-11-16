@@ -1,0 +1,16 @@
+fileFormatVersion: 2
+guid: 98b8f23d2fd980947843a807cbeba62b
+ShaderImporter:
+  externalObjects: {}
+  defaultTextures: []
+  nonModifiableTextures: []
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Shaders/Variations/Matrix_Standart(Specular).shader
+  uploadId: 704188

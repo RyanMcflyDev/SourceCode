@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 2159dc444cf021343aa403756aecad66
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Prefabs/CircleSymbols.prefab
+  uploadId: 704188

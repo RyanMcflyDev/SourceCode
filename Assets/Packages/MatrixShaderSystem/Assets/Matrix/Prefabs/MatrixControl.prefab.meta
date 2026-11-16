@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 7a84bbf0072d225478870e0e0576a113
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Prefabs/MatrixControl.prefab
+  uploadId: 704188

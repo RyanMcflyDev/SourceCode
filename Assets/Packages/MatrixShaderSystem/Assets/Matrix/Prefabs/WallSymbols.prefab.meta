@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 73df272196232ec46acd425b3da9df12
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Prefabs/WallSymbols.prefab
+  uploadId: 704188

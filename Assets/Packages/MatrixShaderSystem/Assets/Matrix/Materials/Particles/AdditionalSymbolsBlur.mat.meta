@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: b4b101c2a3f0e0d4daecc0cf3e0bb667
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 279393
+  packageName: Matrix Shaders System
+  packageVersion: 1.2
+  assetPath: Assets/MatrixShaderSystem/Assets/Matrix/Materials/Particles/AdditionalSymbolsBlur.mat
+  uploadId: 704188
