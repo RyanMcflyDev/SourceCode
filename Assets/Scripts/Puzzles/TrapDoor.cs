@@ -13,6 +13,10 @@ public class TrapDoor : MonoBehaviour
     [SerializeField] private BoxCollider shaftArea;
     [SerializeField] private LayerMask detectLayers;
 
+    [Header("Sound")]
+    // optional, played when byte's step opens the lid
+    [SerializeField] private RandomSound openSound;
+
     [Header("Timing")]
     [SerializeField] private float timeToDie = 5f;
 
@@ -50,6 +54,7 @@ public class TrapDoor : MonoBehaviour
             {
                 isOpen = true;
                 lid.SetActive(false);
+                if (openSound != null) openSound.Play();
             }
             return;
         }

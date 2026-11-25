@@ -10,6 +10,9 @@ public static class GameEvents
     public static event Action<Transform> PlayerSwapped;
     // null when the selection is dropped
     public static event Action<Transform> SelectionChanged;
+    // byte tried to select something and couldn't (dead zone, out of range, no line of sight)
+    public static event Action SelectionBlocked;
+
 
     // so things that switch on mid code vision can check if it's already active
     public static bool CodeVisionActive { get; private set; }
@@ -19,6 +22,8 @@ public static class GameEvents
     public static void RaiseSpawnPointChanged(Transform spawnPoint) => SpawnPointChanged?.Invoke(spawnPoint);
     public static void RaisePlayerSwapped(Transform target) => PlayerSwapped?.Invoke(target);
     public static void RaiseSelectionChanged(Transform target) => SelectionChanged?.Invoke(target);
+    public static void RaiseSelectionBlocked() => SelectionBlocked?.Invoke();
+
 
     public static void RaiseCodeVisionChanged(bool active)
     {
@@ -36,6 +41,8 @@ public static class GameEvents
         CodeVisionChanged = null;
         PlayerSwapped = null;
         SelectionChanged = null;
+        SelectionBlocked = null;
+
         CodeVisionActive = false;
     }
 }

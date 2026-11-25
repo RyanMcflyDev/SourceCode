@@ -107,16 +107,24 @@ public class Swapper : MonoBehaviour
         if (InNoSelectZone())
         {
             Debug.Log("[Swapper] In a no select zone, selection blocked.");
+            GameEvents.RaiseSelectionBlocked();
             return;
         }
 
         Ray ray = mainCamera.ScreenPointToRay(pointAction.action.ReadValue<Vector2>());
+        // clicking empty floor isn't a failed selection, so it stays silent
         if (!Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, swappableLayers, QueryTriggerInteraction.Ignore)) return;
-        if (!IsInRange(hit.transform)) return;
+
+        if (!IsInRange(hit.transform))
+        {
+            GameEvents.RaiseSelectionBlocked();
+            return;
+        }
 
         if (!HasLineOfSight(hit.collider))
         {
             Debug.Log("[Swapper] No line of sight to target, selection blocked.");
+            GameEvents.RaiseSelectionBlocked();
             return;
         }
 

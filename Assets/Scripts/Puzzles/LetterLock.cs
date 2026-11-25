@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -12,14 +13,23 @@ public class LetterLock : MonoBehaviour
     [SerializeField] private LayerMask blockLayers;
     [SerializeField] private UnityEvent onSolved;
 
+    [Header("Sound")]
+    // both optional; a wrong letter plays once each time a block lands in the slot
+    [SerializeField] private RandomSound lockInSound;
+    [SerializeField] private RandomSound wrongLetterSound;
+    // wait before playing, so it doesn't land on top of anything else making a noise at the same moment
+    [SerializeField, Min(0f)] private float soundDelay;
+
     private Transform[] lockedBlocks;
     private Vector3[] lockedPositions;
+    private LetterBlock[] wrongBlocks;
     private int lockedCount;
 
     private void Awake()
     {
         lockedBlocks = new Transform[slots.Length];
         lockedPositions = new Vector3[slots.Length];
+        wrongBlocks = new LetterBlock[slots.Length];
     }
 
     private void OnEnable() => GameEvents.PlayerRespawned += PutBlocksBack;
@@ -33,7 +43,16 @@ public class LetterLock : MonoBehaviour
             if (lockedBlocks[i] != null) continue;
 
             LetterBlock block = BlockIn(slots[i]);
-            if (block != null && block.Letter == word[i].ToString()) LockIn(i, block.transform);
+            if (block != null && block.Letter == word[i].ToString())
+            {
+                wrongBlocks[i] = null;
+                LockIn(i, block.transform);
+                continue;
+            }
+
+            // only sound when a different wrong block arrives, not every step it sits there
+            if (block != null && block != wrongBlocks[i]) PlaySound(wrongLetterSound);
+            wrongBlocks[i] = block;
         }
     }
 
@@ -57,8 +76,23 @@ public class LetterLock : MonoBehaviour
         foreach (Transform part in block.GetComponentsInChildren<Transform>())
             part.gameObject.layer = 0;
 
+        PlaySound(lockInSound);
+
         lockedCount++;
         if (lockedCount == slots.Length) onSolved.Invoke();
+    }
+
+    private void PlaySound(RandomSound sound)
+    {
+        if (sound == null) return;
+        if (soundDelay <= 0f) sound.Play();
+        else StartCoroutine(PlayAfterDelay(sound));
+    }
+
+    private IEnumerator PlayAfterDelay(RandomSound sound)
+    {
+        yield return new WaitForSeconds(soundDelay);
+        sound.Play();
     }
 
     // the room reset sends every block back to its start, locked ones go back in their slots
