@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 7716206725735336163}
   - component: {fileID: 1668045694658641896}
   - component: {fileID: 2306675140622500432}
+  - component: {fileID: 255217419363553638}
   m_Layer: 3
   m_Name: Basement Crate
   m_TagString: Untagged
@@ -86,6 +87,20 @@ NavMeshObstacle:
   m_CarveOnlyStationary: 1
   m_Center: {x: 0, y: 0, z: 0}
   m_TimeToStationary: 0.5
+--- !u!114 &255217419363553638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6895251829074782490}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 972d425e0d392504e8916a96fcde42a9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SourceCode.Gameplay::FallWhenUnsupported
+  gravity: 20
+  maxFallDistance: 15
 --- !u!1001 &3909755618018376144
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -14,6 +14,8 @@ public class PauseMenu : MonoBehaviour
     private bool isPaused;
     // only unlock byte if the pause locked him, so it can't end a dialogue lock early
     private bool lockedByPause;
+    // so pausing in bullet time resumes slowed, not at full speed
+    private float timeScaleBeforePause = 1f;
 
     private void Awake()
     {
@@ -71,13 +73,15 @@ public class PauseMenu : MonoBehaviour
     public void MainMenu()
     {
         SetPaused(false);
+        Time.timeScale = 1f;
         SceneManager.LoadScene(menuScene);
     }
 
     private void SetPaused(bool paused)
     {
+        if (paused && !isPaused) timeScaleBeforePause = Time.timeScale;
         isPaused = paused;
-        Time.timeScale = paused ? 0f : 1f;
+        Time.timeScale = paused ? 0f : timeScaleBeforePause;
         pausePanel.SetActive(paused);
         controlsPanel.SetActive(false);
 

@@ -529,6 +529,7 @@ GameObject:
   - component: {fileID: 3739252923319024659}
   - component: {fileID: 1977219982642520746}
   - component: {fileID: 5523201707478713076}
+  - component: {fileID: 4218090200526833628}
   m_Layer: 3
   m_Name: Enemy
   m_TagString: Enemy
@@ -636,6 +637,7 @@ MonoBehaviour:
   wanderWaitMin: 1
   wanderWaitMax: 3
   patrolPoints: []
+  patrolStopDistance: -1
   confusedDuration: 2
   confusedTurnSpeed: 120
   secondSwapKills: 1
@@ -701,6 +703,21 @@ MonoBehaviour:
   shakeAmount: 0.08
   flashColour: {r: 4, g: 0.4, b: 0.4, a: 1}
   flashSpeed: 14
+--- !u!114 &4218090200526833628
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1146052914622592951}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7903c07ca544a4c429cb8ca043c88765, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SourceCode.Gameplay::OutlineStyle
+  width: 0.035
+  overrideColour: 1
+  colour: {r: 1, g: 0.028301716, b: 0.028301716, a: 1}
 --- !u!1 &1247435939429520224
 GameObject:
   m_ObjectHideFlags: 0

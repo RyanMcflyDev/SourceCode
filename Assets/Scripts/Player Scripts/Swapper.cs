@@ -12,6 +12,7 @@ public class Swapper : MonoBehaviour
 
     [Header("References")]
     [SerializeField] private Camera mainCamera;
+    // optional, the selection outline does this job now
     [SerializeField] private GameObject markerPrefab;
 
     [Header("Targeting")]
@@ -27,11 +28,18 @@ public class Swapper : MonoBehaviour
     [Header("Timing")]
     [SerializeField] private float cooldown = 1f;
 
-    private const float NavMeshSnapDistance = 2f;
-    // how far sideways an enemy can be pulled onto the navmesh, keep small so they fall into pits
-    private const float LedgeSnapDistance = 0.5f;
+    // floor check under the spot the target lands on, from a little above the feet to a little below
+    private const float GroundCheckUp = 0.3f;
+    private const float GroundCheckDown = 0.5f;
+    // anything flatter than this counts as floor, walls don't
+    private const float MinFloorNormal = 0.1f;
+    // an enemy on solid floor gets pulled this far onto the navmesh, the navmesh stops short of pit edges
+    private const float EdgeSnapDistance = 1.5f;
+    // the navmesh point has to be on the same floor, so an enemy in the trap door shaft isn't pulled back up
+    private const float SameFloorHeight = 0.5f;
 
     private Transform target;
+    private bool hasTarget;
     private GameObject marker;
     private float nextSwapTime;
 
@@ -39,8 +47,11 @@ public class Swapper : MonoBehaviour
     {
         if (mainCamera == null) mainCamera = Camera.main;
 
-        marker = Instantiate(markerPrefab);
-        marker.SetActive(false);
+        if (markerPrefab != null)
+        {
+            marker = Instantiate(markerPrefab);
+            marker.SetActive(false);
+        }
     }
 
     private void OnEnable()
@@ -77,18 +88,18 @@ public class Swapper : MonoBehaviour
     // drop the target on death so it can't carry over into the reset room
     private void OnPlayerDied(string cause) => CancelSelection();
 
-    // keep the marker over the target, cancel if the target got destroyed
+    // keep the marker over the target, drop the selection if the target got destroyed or switched off (killed)
     private void LateUpdate()
     {
-        if (!marker.activeSelf) return;
+        if (!hasTarget) return;
 
-        if (target == null)
+        if (target == null || !target.gameObject.activeInHierarchy)
         {
             CancelSelection();
             return;
         }
 
-        marker.transform.position = target.position + Vector3.up * markerHeight;
+        if (marker != null) marker.transform.position = target.position + Vector3.up * markerHeight;
     }
 
     private void TrySelect()
@@ -109,8 +120,7 @@ public class Swapper : MonoBehaviour
             return;
         }
 
-        target = hit.transform;
-        marker.SetActive(true);
+        SetSelection(hit.transform);
     }
 
     // zones are triggers so the overlap has to include them
@@ -121,10 +131,18 @@ public class Swapper : MonoBehaviour
         return false;
     }
 
-    private void CancelSelection()
+    private void CancelSelection() => SetSelection(null);
+
+    private void SetSelection(Transform newTarget)
     {
-        target = null;
-        marker.SetActive(false);
+        bool selecting = newTarget != null;
+        if (!selecting && !hasTarget) return;
+        if (selecting && hasTarget && newTarget == target) return;
+
+        target = newTarget;
+        hasTarget = selecting;
+        if (marker != null) marker.SetActive(selecting);
+        GameEvents.RaiseSelectionChanged(newTarget);
     }
 
     private bool IsInRange(Transform other) => Vector3.Distance(transform.position, other.position) <= swapRange;
@@ -149,9 +167,11 @@ public class Swapper : MonoBehaviour
 
         Vector3 byteFeet = GetFeet(transform);
         Vector3 targetFeet = GetFeet(target);
+        // checked before anything moves, using the target's own width so a wide enemy on a pit rim counts as on the floor
+        bool floorUnderByte = HasGroundBelow(byteFeet, FootprintRadius(target), target);
 
-        MoveTo(transform, transform.position + (targetFeet - byteFeet));
-        MoveTo(target, target.position + (byteFeet - targetFeet));
+        MoveTo(transform, transform.position + (targetFeet - byteFeet), targetFeet, true);
+        MoveTo(target, target.position + (byteFeet - targetFeet), byteFeet, floorUnderByte);
         Physics.SyncTransforms();
         nextSwapTime = Time.unscaledTime + cooldown;
 
@@ -160,7 +180,7 @@ public class Swapper : MonoBehaviour
         CancelSelection();
     }
 
-    private void MoveTo(Transform obj, Vector3 position)
+    private void MoveTo(Transform obj, Vector3 position, Vector3 feet, bool onFloor)
     {
         if (obj.TryGetComponent(out CharacterController controller))
         {
@@ -173,33 +193,54 @@ public class Swapper : MonoBehaviour
 
         if (obj.TryGetComponent(out NavMeshAgent agent))
         {
-            WarpAgent(agent, position);
+            WarpAgent(agent, position, feet, onFloor);
             return;
         }
 
         obj.position = position;
     }
 
-    private void WarpAgent(NavMeshAgent agent, Vector3 position)
+    private void WarpAgent(NavMeshAgent agent, Vector3 position, Vector3 feet, bool onFloor)
     {
-        if (NavMesh.SamplePosition(position, out NavMeshHit hit, NavMeshSnapDistance, NavMesh.AllAreas))
+        // only snap when there's real floor underneath, an enemy over a pit always falls
+        if (onFloor
+            && NavMesh.SamplePosition(feet, out NavMeshHit hit, EdgeSnapDistance, NavMesh.AllAreas)
+            && Mathf.Abs(hit.position.y - feet.y) <= SameFloorHeight)
         {
-            // only snap if the navmesh is basically underneath, otherwise it was the pit edge
-            Vector3 sideways = hit.position - position;
-            sideways.y = 0f;
-
-            if (sideways.magnitude <= LedgeSnapDistance)
-            {
-                // warp to body height, warping to the navmesh point leaves the enemy half in the floor
-                agent.Warp(hit.position + Vector3.up * agent.baseOffset);
-                return;
-            }
+            // warp to body height, warping to the navmesh point leaves the enemy half in the floor
+            agent.Warp(hit.position + Vector3.up * agent.baseOffset);
+            return;
         }
 
-        // no navmesh underneath, turn the agent off and let the enemy fall
+        // no floor, or no navmesh on this floor (trap door shaft), turn the agent off and let the enemy fall
         agent.enabled = false;
         agent.transform.position = position;
         if (agent.TryGetComponent(out Rigidbody body)) body.isKinematic = false;
+    }
+
+    // true if any floor is under a circle this wide round the feet, ignoring byte and the swap target
+    // a single ray from the middle missed the rim when byte stood with his centre just past a pit edge
+    private bool HasGroundBelow(Vector3 feet, float radius, Transform ignore)
+    {
+        Vector3 start = feet + Vector3.up * (GroundCheckUp + radius);
+        foreach (RaycastHit hit in Physics.SphereCastAll(start, radius, Vector3.down, GroundCheckUp + GroundCheckDown, ~0, QueryTriggerInteraction.Ignore))
+        {
+            if (hit.transform.IsChildOf(transform) || hit.transform.IsChildOf(ignore)) continue;
+            // started inside something, like a wall beside byte, so it isn't floor under him
+            if (hit.distance <= 0f) continue;
+            if (hit.normal.y < MinFloorNormal) continue;
+            return true;
+        }
+        return false;
+    }
+
+    // half the target's narrowest width on the ground
+    private static float FootprintRadius(Transform obj)
+    {
+        Collider col = obj.GetComponent<Collider>();
+        if (col == null) return 0.1f;
+        Vector3 extents = col.bounds.extents;
+        return Mathf.Max(0.05f, Mathf.Min(extents.x, extents.z));
     }
 
     // bottom centre of an object's collider, used as its feet for swapping

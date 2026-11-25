@@ -15,6 +15,8 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
     [SerializeField] private float wanderWaitMin = 1f;
     [SerializeField] private float wanderWaitMax = 3f;
     [SerializeField] private Transform[] patrolPoints;
+    // -1 keeps the old behaviour (stops at attack range), set it low to make a patrol reach its points, e.g. onto a plate
+    [SerializeField] private float patrolStopDistance = -1f;
 
     [Header("Confused (after a swap)")]
     [SerializeField] private float confusedDuration = 3f;
@@ -79,7 +81,10 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
     {
         currentPatrolIndex = 0;
         if (patrolPoints != null && patrolPoints.Length > 0)
+        {
+            if (patrolStopDistance >= 0f) agent.stoppingDistance = patrolStopDistance;
             agent.SetDestination(patrolPoints[0].position);
+        }
         else
             SetNewWanderDestination();
     }
@@ -100,6 +105,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
         if (hasPatrol)
         {
             currentPatrolIndex = (currentPatrolIndex + 1) % patrolPoints.Length;
+            if (patrolStopDistance >= 0f) agent.stoppingDistance = patrolStopDistance;
             agent.SetDestination(patrolPoints[currentPatrolIndex].position);
         }
         else

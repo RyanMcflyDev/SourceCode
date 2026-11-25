@@ -17,6 +17,9 @@ public class CodeVisionMatrix : MonoBehaviour
     private float current = -1f;
     private float target = -1f;
 
+    // true once fully faded out, so MatrixLook knows when it can put the normal material back
+    public bool IsOff => current <= -1f;
+
     private void OnEnable()
     {
         GameEvents.CodeVisionChanged += OnCodeVisionChanged;
@@ -27,6 +30,11 @@ public class CodeVisionMatrix : MonoBehaviour
     }
 
     private void OnDisable() => GameEvents.CodeVisionChanged -= OnCodeVisionChanged;
+
+    // for MatrixLook in scenes without code vision
+    // doesn't restart from off when something is already wearing the matrix, so a second MatrixLook doesn't make the first flicker
+    public void FadeIn() => target = onAmount;
+    public void FadeOut() => OnCodeVisionChanged(false);
 
     private void OnCodeVisionChanged(bool codeVisionOn)
     {

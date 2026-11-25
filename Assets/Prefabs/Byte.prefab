@@ -207,6 +207,7 @@ GameObject:
   - component: {fileID: 4961303089117094056}
   - component: {fileID: 6191324727559228411}
   - component: {fileID: 1392288058938433673}
+  - component: {fileID: 48291780392014220}
   m_Layer: 0
   m_Name: Byte
   m_TagString: Player
@@ -306,7 +307,7 @@ MonoBehaviour:
   selectAction: {fileID: -8077035414829857580, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   cancelAction: {fileID: 1109582509131226071, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   mainCamera: {fileID: 0}
-  markerPrefab: {fileID: 278392200524327109, guid: cde65733868e60c4c90aaa37b31ef2fc, type: 3}
+  markerPrefab: {fileID: 0}
   swappableLayers:
     serializedVersion: 2
     m_Bits: 8
@@ -399,6 +400,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVision
   codeVisionAction: {fileID: 1701067717930345089, guid: 052faaac586de48259a63d0c4782560b, type: 3}
   duration: 3
+  bulletTime: 0
+  slowScale: 0.2
+  cooldown: 3
+  presetDurations:
+  - 1.5
+  - 10
+  - 30
 --- !u!114 &1392288058938433673
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -416,6 +424,19 @@ MonoBehaviour:
   - {fileID: 8455285202130477143}
   - {fileID: 5934626931640475634}
   - {fileID: 6191324727559228411}
+--- !u!114 &48291780392014220
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 527496440811986219}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5bc8f7ffd2bcee44eb347f6f66e69ef3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: SourceCode.Gameplay::SelectionOutline
+  outlineMaterial: {fileID: 2100000, guid: fc00a57c4b7b8e74aa691d818e70a2d5, type: 2}
 --- !u!1 &744218486828720990
 GameObject:
   m_ObjectHideFlags: 0
