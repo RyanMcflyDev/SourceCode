@@ -85,6 +85,7 @@ public class EnemyDeath : MonoBehaviour, IKillable, IResettable
         cutoffBottom = centre - halfHeight - noiseHeight;
         dissolveTimer = 0f;
         dissolving = true;
+        GameEvents.RaiseEnemyKilled(transform);
         meshRenderer.sharedMaterial = dissolveInstance;
     }
 

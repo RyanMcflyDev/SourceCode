@@ -12,6 +12,8 @@ public static class GameEvents
     public static event Action<Transform> SelectionChanged;
     // byte tried to select something and couldn't (dead zone, out of range, no line of sight)
     public static event Action SelectionBlocked;
+    // an enemy has started its death dissolve (not raised for pit falls, they're out of sight)
+    public static event Action<Transform> EnemyKilled;
 
 
     // so things that switch on mid code vision can check if it's already active
@@ -23,6 +25,7 @@ public static class GameEvents
     public static void RaisePlayerSwapped(Transform target) => PlayerSwapped?.Invoke(target);
     public static void RaiseSelectionChanged(Transform target) => SelectionChanged?.Invoke(target);
     public static void RaiseSelectionBlocked() => SelectionBlocked?.Invoke();
+    public static void RaiseEnemyKilled(Transform enemy) => EnemyKilled?.Invoke(enemy);
 
 
     public static void RaiseCodeVisionChanged(bool active)
@@ -42,6 +45,7 @@ public static class GameEvents
         PlayerSwapped = null;
         SelectionChanged = null;
         SelectionBlocked = null;
+        EnemyKilled = null;
 
         CodeVisionActive = false;
     }
