@@ -5,7 +5,11 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 {
     [Header("Attack")]
     [SerializeField] private float attackRange = 2f;
-    [SerializeField] private float attackCooldown = 1.5f;
+    // time from starting the swing to the hit landing, byte can get out of range or swap the enemy before then
+    [SerializeField] private float attackWindup = 0.6f;
+    // pause after the hit before it can chase or swing again
+    [SerializeField] private float attackRecovery = 0.4f;
+    [SerializeField] private float attackTurnSpeed = 360f;
 
     [Header("Investigate")]
     [SerializeField] private float investigateDuration = 5f;
@@ -29,6 +33,8 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
     public enum AIState { Patrol, Chase, Investigate, Confused }
     public AIState CurrentState { get; private set; } = AIState.Patrol;
+    public bool IsAttacking { get; private set; }
+    public float AttackWindup => attackWindup;
 
     private NavMeshAgent agent;
     private EnemyPerception perception;
@@ -36,6 +42,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
     private Vector3? lastKnownPosition;
 
     private float attackTimer;
+    private bool hitDone;
     private float investigateTimer;
     private float confusedTimer;
     private float confusedEndedAt = -999f;
@@ -142,6 +149,13 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
     private void UpdateChase()
     {
+        // a swing that has started plays out even if byte ducks out of sight
+        if (IsAttacking)
+        {
+            UpdateAttack();
+            return;
+        }
+
         if (!CanSeePlayer(true))
         {
             agent.stoppingDistance = 0f;
@@ -154,26 +168,44 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
         if (distanceToPlayer <= attackRange)
         {
-            // stop and attack
-            agent.stoppingDistance = attackRange;
-            agent.SetDestination(player.position);
-
-            attackTimer += Time.deltaTime;
-            if (attackTimer >= attackCooldown)
-            {
-                attackTimer = 0f;
-                // one hit kills for now
-                if (player.TryGetComponent(out IKillable killable))
-                    killable.Kill(gameObject.name);
-            }
+            StartAttack();
         }
         else
         {
             // byte moved out of attack range, chase him
-            attackTimer = 0f;
             agent.stoppingDistance = 0f;
             agent.SetDestination(player.position);
         }
+    }
+
+    private void StartAttack()
+    {
+        IsAttacking = true;
+        hitDone = false;
+        attackTimer = 0f;
+        agent.ResetPath();
+    }
+
+    private void UpdateAttack()
+    {
+        Vector3 toPlayer = player.position - transform.position;
+        toPlayer.y = 0f;
+
+        // keep turning to byte through the wind up so the swing points at him
+        if (!hitDone && toPlayer.sqrMagnitude > 0.01f)
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.LookRotation(toPlayer), attackTurnSpeed * Time.deltaTime);
+
+        attackTimer += Time.deltaTime;
+        if (!hitDone && attackTimer >= attackWindup)
+        {
+            hitDone = true;
+            // one hit kills, but only if byte is still in reach
+            if (toPlayer.magnitude <= attackRange && player.TryGetComponent(out IKillable killable))
+                killable.Kill(gameObject.name);
+        }
+
+        if (attackTimer >= attackWindup + attackRecovery)
+            IsAttacking = false;
     }
 
     private void UpdateInvestigate()
@@ -224,6 +256,9 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
 
     public void OnTeleported()
     {
+        // swapping it mid swing cancels the attack
+        IsAttacking = false;
+
         // swapped again while stunned (or just after) = destabilised, so it dies
         if (secondSwapKills && IsStillStunned())
         {
@@ -245,6 +280,7 @@ public class EnemyAI : MonoBehaviour, ITeleportable, IResettable
         confusedTimer = 0f;
         confusedEndedAt = -999f;
         attackTimer = 0f;
+        IsAttacking = false;
         isWaiting = false;
         agent.stoppingDistance = attackRange;
         agent.ResetPath();

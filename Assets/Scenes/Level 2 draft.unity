@@ -15272,14 +15272,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Byte
       objectReference: {fileID: 0}
-    - target: {fileID: 552409853688049208, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
-      propertyPath: volume
-      value: 0.08
-      objectReference: {fileID: 0}
-    - target: {fileID: 3535380502056980798, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
-      propertyPath: MaxStep
-      value: 0.37666678
-      objectReference: {fileID: 0}
     - target: {fileID: 4099426973959973087, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.5
@@ -15328,21 +15320,12 @@ PrefabInstance:
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 129953923}
-    - target: {fileID: 6191324727559228411, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9033739095434148560, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
-      propertyPath: topClipSpeed
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 9033739095434148560, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
-      propertyPath: maxPlaybackRate
-      value: 1
+    - target: {fileID: 8199602279258909585, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
+      propertyPath: volume
+      value: 0.308
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects:
-    - {fileID: 8627214232024441309, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
+    m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e87ba2b7bd35c1f4a8256de92f29eb89, type: 3}
@@ -20926,7 +20909,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 9
   openSound: {fileID: 674931964}
-  timeToDie: 5
+  timeToDie: 2
 --- !u!1 &1592968341
 GameObject:
   m_ObjectHideFlags: 0

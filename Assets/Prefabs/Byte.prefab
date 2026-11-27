@@ -228,7 +228,6 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2365337849004885135}
   - {fileID: 7680119606969687846}
   - {fileID: 2661792544804678146}
   - {fileID: 6078709992327829427}
@@ -395,7 +394,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 527496440811986219}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c5cba6f78f2b2e74098d79b8839ae3a6, type: 3}
   m_Name: 
@@ -1113,8 +1112,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::ByteAnimator
   controller: {fileID: 8016987879980568618}
-  topClipSpeed: 2.72
-  maxPlaybackRate: 3
+  topClipSpeed: 1
+  maxPlaybackRate: 1
   speedDamping: 0.08
 --- !u!82 &8247202831861660587
 AudioSource:
@@ -1237,7 +1236,7 @@ MonoBehaviour:
   runSpeed: 10
   minSpeed: 0.2
   minGap: 0.12
-  volume: 0.6
+  volume: 0.08
   pitchVariation: 0.08
   volumeVariation: 0.1
 --- !u!1 &2408469621939380552
@@ -2009,8 +2008,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::PlaySoundOnSelect
   selectClip: {fileID: 8300000, guid: f3cba1909dd8f14429bb41d02e557744, type: 3}
-  blockedClip: {fileID: 8300000, guid: 60131df3433755b4c8783b7ba6ba421f, type: 3}
-  volume: 0.7
+  blockedClip: {fileID: 8300000, guid: 5ee1af60a3b757947a6d1f53d5ae5f57, type: 3}
+  volume: 0.3
 --- !u!1 &4573539287250263934
 GameObject:
   m_ObjectHideFlags: 0
@@ -5573,9 +5572,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bc4ade19ecc6a21449724a312828fb07, type: 3}
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::PlaySoundOnSwap
-  clip: {fileID: 0}
-  volume: 0.7
-  pitchVariation: 0.05
+  clip: {fileID: 8300000, guid: 3f9f41cb150ca1549b5fcacc46e70fa8, type: 3}
+  volume: 0.238
+  pitch: 1.208
+  startAt: 0
+  maxLength: 0
+  fadeOut: 0.1
+  pitchVariation: 0.101
 --- !u!1 &7714129069064010665
 GameObject:
   m_ObjectHideFlags: 0
@@ -5719,7 +5722,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: SourceCode.Gameplay::PlaySoundOnDeath
   clip: {fileID: 8300000, guid: 96d4b23d38d8378479ddca70b4d66244, type: 3}
-  volume: 0.8
+  volume: 0.308
 --- !u!1 &7715874274905128921
 GameObject:
   m_ObjectHideFlags: 0
@@ -6248,67 +6251,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: SourceCode.Gameplay::CodeVisionLook
   normalMaterial: {fileID: 2100000, guid: f03213e836b6d46eda1d4f0531452375, type: 2}
   codeVisionMaterial: {fileID: 2100000, guid: bb907f5e4e416db4188195f752e7103d, type: 2}
---- !u!1 &8627214232024441309
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2365337849004885135}
-  - component: {fileID: 8073156221831972634}
-  m_Layer: 0
-  m_Name: DropShadow
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2365337849004885135
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8627214232024441309}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0.7071068, y: -0, z: -0, w: 0.7071068}
-  m_LocalPosition: {x: 0, y: 0.1, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4099426973959973087}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &8073156221831972634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8627214232024441309}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0777d029ed3dffa4692f417d4aba19ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Unity.RenderPipelines.Universal.Runtime::UnityEngine.Rendering.Universal.DecalProjector
-  m_Material: {fileID: 2100000, guid: 502c81da4ad4a004e98b62abe0102547, type: 2}
-  m_DrawDistance: 1000
-  m_FadeScale: 0.9
-  m_StartAngleFade: 180
-  m_EndAngleFade: 180
-  m_UVScale: {x: 1, y: 1}
-  m_UVBias: {x: 0, y: 0}
-  m_RenderingLayerMask:
-    serializedVersion: 0
-    m_Bits: 1
-  m_ScaleMode: 0
-  m_Offset: {x: 0, y: 0, z: 1.5}
-  m_Size: {x: 1, y: 0.8, z: 3}
-  m_FadeFactor: 0.5
-  m_VisibleInScene: 1
-  version: 1
-  m_DecalLayerMask: 1
 --- !u!1 &8754946409312900221
 GameObject:
   m_ObjectHideFlags: 0

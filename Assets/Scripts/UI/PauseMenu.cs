@@ -8,6 +8,7 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] private InputAction pauseAction = new InputAction("Pause", InputActionType.Button, "<Keyboard>/escape");
     [SerializeField] private GameObject pausePanel;
     [SerializeField] private GameObject controlsPanel;
+    [SerializeField] private GameObject settingsPanel;
     [SerializeField] private string menuScene = "Menu";
 
     private PlayerLock playerLock;
@@ -22,6 +23,7 @@ public class PauseMenu : MonoBehaviour
         playerLock = FindAnyObjectByType<PlayerLock>();
         pausePanel.SetActive(false);
         controlsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
     }
 
     private void OnEnable()
@@ -39,10 +41,10 @@ public class PauseMenu : MonoBehaviour
 
     private void OnPause(InputAction.CallbackContext context)
     {
-        // esc on the controls page goes back to the pause page first
-        if (isPaused && controlsPanel.activeSelf)
+        // esc on the controls or settings page goes back to the pause page first
+        if (isPaused && (controlsPanel.activeSelf || settingsPanel.activeSelf))
         {
-            HideControls();
+            ShowPausePage();
             return;
         }
         SetPaused(!isPaused);
@@ -56,9 +58,20 @@ public class PauseMenu : MonoBehaviour
         controlsPanel.SetActive(true);
     }
 
-    public void HideControls()
+    public void HideControls() => ShowPausePage();
+
+    public void ShowSettings()
+    {
+        pausePanel.SetActive(false);
+        settingsPanel.SetActive(true);
+    }
+
+    public void HideSettings() => ShowPausePage();
+
+    private void ShowPausePage()
     {
         controlsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
         pausePanel.SetActive(true);
     }
 
@@ -84,6 +97,7 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = paused ? 0f : timeScaleBeforePause;
         pausePanel.SetActive(paused);
         controlsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
 
         // stops clicks on the pause buttons selecting or swapping
         if (playerLock == null) return;

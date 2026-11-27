@@ -4,7 +4,8 @@
     "references": [
         "SourceCode.Core",
         "Unity.InputSystem",
-        "KinoGlitch.Runtime"
+        "KinoGlitch.Runtime",
+        "UnityEngine.UI"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

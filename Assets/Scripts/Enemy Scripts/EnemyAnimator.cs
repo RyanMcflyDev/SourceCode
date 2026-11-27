@@ -19,8 +19,15 @@ public class EnemyAnimator : MonoBehaviour
     [SerializeField] private float turnSpeed = 900f;
     [SerializeField] private float minTurnSpeed = 0.2f;
 
+    [Header("Attack")]
+    [SerializeField] private EnemyAI ai;
+    // when the hit lands in the attack clip at normal speed, the state is sped up so it lands on the ai's wind up
+    [SerializeField] private float clipHitTime = 0.95f;
+
     private static readonly int SpeedId = Animator.StringToHash("Speed");
     private static readonly int WalkRateId = Animator.StringToHash("WalkRate");
+    private static readonly int AttackingId = Animator.StringToHash("Attacking");
+    private static readonly int AttackSpeedId = Animator.StringToHash("AttackSpeed");
 
     private Animator animator;
 
@@ -28,6 +35,7 @@ public class EnemyAnimator : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         if (agent == null) agent = GetComponentInParent<NavMeshAgent>();
+        if (ai == null) ai = GetComponentInParent<EnemyAI>();
     }
 
     private void Update()
@@ -40,6 +48,13 @@ public class EnemyAnimator : MonoBehaviour
             velocity.y = 0f;
         }
         float speed = velocity.magnitude;
+
+        if (ai != null)
+        {
+            // the agent goes off when it dies, so a swing doesn't keep playing through the dissolve
+            animator.SetBool(AttackingId, ai.IsAttacking && agent.isActiveAndEnabled);
+            animator.SetFloat(AttackSpeedId, clipHitTime / Mathf.Max(ai.AttackWindup, 0.05f));
+        }
 
         animator.SetFloat(SpeedId, speed, speedDamping, Time.deltaTime);
 
